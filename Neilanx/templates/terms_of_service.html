@@ -1,0 +1,301 @@
+{% extends "base.html" %}
+
+{% block title %}Användarvillkor - NeilanX{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Header -->
+            <div class="text-center mb-5">
+                <h1 class="h2 mb-3">Användarvillkor</h1>
+                <p class="text-muted">Senast uppdaterad: 2024-09-14</p>
+                <div class="alert alert-info">
+                    <i class="fas fa-handshake me-2"></i>
+                    <strong>Välkommen till NeilanX!</strong> Dessa villkor reglerar din användning av vår tjänst.
+                </div>
+            </div>
+
+            <!-- Acceptance -->
+            <section class="mb-5">
+                <h3 class="h4 mb-3">1. Godkännande av villkor</h3>
+                <p>Genom att använda NeilanX godkänner du dessa användarvillkor. Om du inte accepterar villkoren, vänligen använd inte tjänsten.</p>
+                
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Viktigt:</strong> Dessa villkor kan uppdateras. Vi meddelar dig 30 dagar före viktiga ändringar.
+                </div>
+            </section>
+
+            <!-- Service Description -->
+            <section class="mb-5">
+                <h3 class="h4 mb-3">2. Tjänstebeskrivning</h3>
+                
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <h6><i class="fas fa-brain text-primary me-2"></i>AI-analys</h6>
+                                <p class="small text-muted">Automatisk sentiment-analys av kundrecensioner med svenska AI-modeller</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <h6><i class="fas fa-chart-bar text-success me-2"></i>Rapporter</h6>
+                                <p class="small text-muted">Detaljerade PDF-rapporter med insikter och rekommendationer</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h6 class="mt-4">Vad NeilanX INTE är:</h6>
+                <ul>
+                    <li>Inte en automatisk recensionssamlare från externa webbplatser</li>
+                    <li>Inte en garanti för specifika affärsresultat</li>
+                    <li>Inte juridisk eller finansiell rådgivning</li>
+                </ul>
+            </section>
+
+            <!-- User Responsibilities -->
+            <section class="mb-5">
+                <h3 class="h4 mb-3">3. Dina ansvar som användare</h3>
+                
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-primary bg-opacity-10">
+                        <h6 class="mb-0">Du förbinder dig att:</h6>
+                    </div>
+                    <div class="card-body">
+                        <ul>
+                            <li><strong>Endast ladda upp data du äger eller har rätt att använda</strong></li>
+                            <li><strong>Inte använda tjänsten för olagliga ändamål</strong></li>
+                            <li><strong>Respektera andra användares integritet</strong></li>
+                            <li><strong>Inte försöka kompromissa systemsäkerheten</strong></li>
+                            <li><strong>Ge korrekta kontouppgifter</strong></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="alert alert-danger mt-3">
+                    <h6><i class="fas fa-ban me-2"></i>Förbjudna aktiviteter</h6>
+                    <ul class="mb-0">
+                        <li>Ladda upp copyrightskyddat material utan tillstånd</li>
+                        <li>Använda automatiserade system för att belasta tjänsten</li>
+                        <li>Dela ditt konto med andra</li>
+                        <li>Återförsälja eller sublicensiera tjänsten</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Pricing and Payment -->
+            <section class="mb-5">
+                <h3 class="h4 mb-3">4. Priser och betalning</h3>
+                
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-success bg-opacity-10">
+                                <h6 class="mb-0"><i class="fas fa-gift me-2"></i>Free Plan</h6>
+                            </div>
+                            <div class="card-body">
+                                <ul class="mb-0">
+                                    <li>100 recensioner/månad</li>
+                                    <li>Grundläggande analys</li>
+                                    <li>Inga bindningstider</li>
+                                    <li>Kan avbrytas när som helst</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-primary bg-opacity-10">
+                                <h6 class="mb-0"><i class="fas fa-star me-2"></i>Premium Plan</h6>
+                            </div>
+                            <div class="card-body">
+                                <ul class="mb-0">
+                                    <li>399 kr/månad (exkl. moms)</li>
+                                    <li>Månadsvis debitering</li>
+                                    <li>Avbryt när som helst</li>
+                                    <li>Obegränsade recensioner</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <h6>Betalningsvillkor:</h6>
+                    <ul>
+                        <li><strong>Förskottsbetalning:</strong> Premium debiteras månatligen i förskott</li>
+                        <li><strong>Automatisk förnyelse:</strong> Prenumerationen förnyas automatiskt</li>
+                        <li><strong>Uppsägning:</strong> Kan göras när som helst, gäller till periodens slut</li>
+                        <li><strong>Återbetalning:</strong> Inga återbetalningar för påbörjade perioder</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Data and Privacy -->
+            <section class="mb-5">
+                <h3 class="h4 mb-3">5. Data och integritet</h3>
+                
+                <div class="alert alert-success">
+                    <h6><i class="fas fa-shield-alt me-2"></i>Din data är säker</h6>
+                    <p class="mb-0">Vi följer GDPR och svensk dataskyddslagstiftning. Läs vår <a href="{{ url_for('privacy_policy') }}" class="alert-link">integritetspolicy</a> för detaljer.</p>
+                </div>
+
+                <h6>Vad händer med din data:</h6>
+                <ul>
+                    <li>Du äger all data du laddar upp</li>
+                    <li>Vi använder data endast för att leverera tjänsten</li>
+                    <li>Data lagras säkert på svenska servrar</li>
+                    <li>Du kan radera dina data när som helst</li>
+                </ul>
+            </section>
+
+            <!-- Intellectual Property -->
+            <section class="mb-5">
+                <h3 class="h4 mb-3">6. Immaterialrätt</h3>
+                
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-info bg-opacity-10">
+                                <h6 class="mb-0">Du äger</h6>
+                            </div>
+                            <div class="card-body">
+                                <ul class="mb-0">
+                                    <li>Din uppspelade data</li>
+                                    <li>Genererade rapporter</li>
+                                    <li>Dina analysresultat</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-warning bg-opacity-10">
+                                <h6 class="mb-0">NeilanX äger</h6>
+                            </div>
+                            <div class="card-body">
+                                <ul class="mb-0">
+                                    <li>Plattformen och mjukvaran</li>
+                                    <li>AI-modeller och algoritmer</li>
+                                    <li>Varumärken och design</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Service Availability -->
+            <section class="mb-5">
+                <h3 class="h4 mb-3">7. Tjänstetillgänglighet</h3>
+                
+                <p>Vi strävar efter hög tillgänglighet men kan inte garantera 100% drifttid.</p>
+                
+                <div class="alert alert-info">
+                    <h6><i class="fas fa-tools me-2"></i>Planerat underhåll</h6>
+                    <p class="mb-0">Vi meddelar planerat underhåll minst 24 timmar i förväg via e-post eller på webbplatsen.</p>
+                </div>
+
+                <h6>Vi ansvarar INTE för:</h6>
+                <ul>
+                    <li>Avbrott orsakade av tredje part (internet, el, etc.)</li>
+                    <li>Force majeure (naturkatastrofer, krig, etc.)</li>
+                    <li>Skador från felaktig användning</li>
+                    <li>Dataförlust från användares handlingar</li>
+                </ul>
+            </section>
+
+            <!-- Liability Limitation -->
+            <section class="mb-5">
+                <h3 class="h4 mb-3">8. Ansvarsbegränsning</h3>
+                
+                <div class="alert alert-warning">
+                    <h6><i class="fas fa-exclamation-triangle me-2"></i>Viktigt att veta</h6>
+                    <p>NeilanX tillhandahålls "som det är". Vi ansvarar endast för direkta skador upp till beloppet du betalat under de senaste 12 månaderna.</p>
+                </div>
+
+                <p><strong>Vi ansvarar ALDRIG för:</strong></p>
+                <ul>
+                    <li>Indirekta skador eller förlorad vinst</li>
+                    <li>Skador från beslut baserade på våra analyser</li>
+                    <li>Fel i AI-analys eller rekommendationer</li>
+                    <li>Tredje parts handlingar</li>
+                </ul>
+            </section>
+
+            <!-- Termination -->
+            <section class="mb-5">
+                <h3 class="h4 mb-3">9. Uppsägning</h3>
+                
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-success bg-opacity-10">
+                                <h6 class="mb-0">Du kan</h6>
+                            </div>
+                            <div class="card-body">
+                                <ul class="mb-0">
+                                    <li>Avsluta kontot när som helst</li>
+                                    <li>Exportera din data före avslut</li>
+                                    <li>Behålla data till periodens slut</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-danger bg-opacity-10">
+                                <h6 class="mb-0">Vi kan</h6>
+                            </div>
+                            <div class="card-body">
+                                <ul class="mb-0">
+                                    <li>Stänga konton som bryter villkoren</li>
+                                    <li>Avsluta tjänsten med 30 dagars varsel</li>
+                                    <li>Begränsa tillgång vid missbruk</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Governing Law -->
+            <section class="mb-5">
+                <h3 class="h4 mb-3">10. Tillämplig lag</h3>
+                
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <p><strong>Dessa villkor styrs av svensk lag.</strong></p>
+                        <p>Tvister ska i första hand lösas genom förhandling. Om det inte är möjligt ska tvister avgöras av svensk domstol med Malmö tingsrätt som första instans.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact -->
+            <section class="mb-5">
+                <h3 class="h4 mb-3">11. Kontakt</h3>
+                
+                <div class="alert alert-primary">
+                    <h6><i class="fas fa-envelope me-2"></i>Frågor om villkoren?</h6>
+                    <p><strong>E-post:</strong> benjamin.neilan16@gmail.com</p>
+                    <p><strong>Adress:</strong> NeilanX, Malmö, Sverige</p>
+                    <p class="mb-0"><strong>Svarstid:</strong> Inom 24 timmar</p>
+                </div>
+            </section>
+
+            <!-- Back to top -->
+            <div class="text-center mt-5">
+                <a href="#top" class="btn btn-outline-primary">
+                    <i class="fas fa-arrow-up me-2"></i>Till toppen
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

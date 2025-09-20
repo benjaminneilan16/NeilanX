@@ -1,0 +1,449 @@
+<!-- Interactive Onboarding Modal System -->
+<div class="modal fade" id="onboardingModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-rocket me-2"></i>
+                    Välkommen till NeilanX!
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Step 1: Welcome -->
+                <div id="onboarding-step-1" class="onboarding-step">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-brain fa-4x text-primary mb-3"></i>
+                        <h4>Låt oss visa dig runt!</h4>
+                        <p class="text-muted">En snabb guide för att komma igång med AI-driven recensionsanalys</p>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-4 text-center">
+                            <i class="fas fa-upload fa-2x text-success mb-2"></i>
+                            <h6>Ladda upp</h6>
+                            <small class="text-muted">CSV-filer eller text</small>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <i class="fas fa-magic fa-2x text-warning mb-2"></i>
+                            <h6>AI analyserar</h6>
+                            <small class="text-muted">Svenska modeller</small>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <i class="fas fa-chart-bar fa-2x text-info mb-2"></i>
+                            <h6>Få insikter</h6>
+                            <small class="text-muted">Rapporter & grafer</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Demo -->
+                <div id="onboarding-step-2" class="onboarding-step" style="display: none;">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-play-circle fa-4x text-success mb-3"></i>
+                        <h4>Vill du prova direkt?</h4>
+                        <p class="text-muted">Ingen registrering krävs för att testa vår demo med svenska exempel-recensioner</p>
+                    </div>
+                    <div class="d-flex gap-3 justify-content-center">
+                        <a href="{{ url_for('demo') }}" class="btn btn-success btn-lg">
+                            <i class="fas fa-rocket me-2"></i>Ja, prova demo!
+                        </a>
+                        <button class="btn btn-outline-primary btn-lg" onclick="nextOnboardingStep()">
+                            <i class="fas fa-arrow-right me-2"></i>Fortsätt guiden
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Upload Guidance -->
+                <div id="onboarding-step-3" class="onboarding-step" style="display: none;">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-file-csv fa-4x text-primary mb-3"></i>
+                        <h4>Förbereda dina recensioner</h4>
+                        <p class="text-muted">Vi accepterar flera format för maximal flexibilitet</p>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="card border-primary">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-file-csv fa-2x text-primary mb-2"></i>
+                                    <h6>CSV-filer</h6>
+                                    <small class="text-muted">Rekommenderat format</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-success">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-edit fa-2x text-success mb-2"></i>
+                                    <h6>Textinmatning</h6>
+                                    <small class="text-muted">Klistra in direkt</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-info">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-image fa-2x text-info mb-2"></i>
+                                    <h6>Bilder/OCR</h6>
+                                    <small class="text-muted">Skärmdumpar</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Features -->
+                <div id="onboarding-step-4" class="onboarding-step" style="display: none;">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-crown fa-4x text-warning mb-3"></i>
+                        <h4>Premium funktioner</h4>
+                        <p class="text-muted">När du är redo att ta steget</p>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="d-flex">
+                                <i class="fas fa-infinity fa-2x text-primary me-3 mt-1"></i>
+                                <div>
+                                    <h6>Obegränsat</h6>
+                                    <small class="text-muted">Analysera tusentals recensioner</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex">
+                                <i class="fas fa-file-pdf fa-2x text-danger me-3 mt-1"></i>
+                                <div>
+                                    <h6>PDF-rapporter</h6>
+                                    <small class="text-muted">Professionella rapporter</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex">
+                                <i class="fas fa-headset fa-2x text-success me-3 mt-1"></i>
+                                <div>
+                                    <h6>Prioriterad support</h6>
+                                    <small class="text-muted">Snabb hjälp när du behöver</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex">
+                                <i class="fas fa-chart-line fa-2x text-info me-3 mt-1"></i>
+                                <div>
+                                    <h6>Avancerad analys</h6>
+                                    <small class="text-muted">Djupare insikter</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Get Started -->
+                <div id="onboarding-step-5" class="onboarding-step" style="display: none;">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-flag-checkered fa-4x text-success mb-3"></i>
+                        <h4>Redo att börja!</h4>
+                        <p class="text-muted">Välj hur du vill fortsätta</p>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <a href="{{ url_for('demo') }}" class="btn btn-success w-100 h-100 p-3 text-decoration-none">
+                                <i class="fas fa-play fa-2x mb-2 d-block"></i>
+                                <strong>Prova demo först</strong>
+                                <small class="d-block">Ingen registrering</small>
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="{{ url_for('register') }}" class="btn btn-primary w-100 h-100 p-3 text-decoration-none">
+                                <i class="fas fa-user-plus fa-2x mb-2 d-block"></i>
+                                <strong>Skapa gratis konto</strong>
+                                <small class="d-block">100 recensioner/månad</small>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="d-flex justify-content-between w-100">
+                    <button type="button" class="btn btn-outline-secondary" onclick="previousOnboardingStep()" id="prevBtn" style="display: none;">
+                        <i class="fas fa-arrow-left me-1"></i>Föregående
+                    </button>
+                    <div class="mx-auto">
+                        <span class="badge bg-primary" id="stepIndicator">1 av 5</span>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="nextOnboardingStep()" id="nextBtn">
+                        Nästa <i class="fas fa-arrow-right ms-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tooltip Overlay System -->
+<div id="tooltipOverlay" class="position-fixed w-100 h-100" style="top: 0; left: 0; background: rgba(0,0,0,0.7); z-index: 9999; display: none;">
+    <div id="tooltipBox" class="position-absolute bg-white rounded p-3 shadow-lg" style="max-width: 300px; z-index: 10000;">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+            <h6 class="mb-0" id="tooltipTitle">Tooltip Title</h6>
+            <button class="btn-close btn-sm" onclick="hideTooltip()"></button>
+        </div>
+        <p class="text-muted mb-3" id="tooltipText">Tooltip content goes here.</p>
+        <div class="d-flex justify-content-between">
+            <button class="btn btn-outline-primary btn-sm" onclick="skipTour()">Hoppa över</button>
+            <button class="btn btn-primary btn-sm" onclick="nextTooltip()">Nästa</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// Onboarding system
+let currentOnboardingStep = 1;
+const totalOnboardingSteps = 5;
+
+function nextOnboardingStep() {
+    if (currentOnboardingStep < totalOnboardingSteps) {
+        document.getElementById(`onboarding-step-${currentOnboardingStep}`).style.display = 'none';
+        currentOnboardingStep++;
+        document.getElementById(`onboarding-step-${currentOnboardingStep}`).style.display = 'block';
+        updateOnboardingButtons();
+    } else {
+        // Close modal on last step and mark as completed
+        bootstrap.Modal.getInstance(document.getElementById('onboardingModal')).hide();
+        localStorage.setItem('neilanx_onboarding_completed', 'true');
+        
+        // Mark as completed on server for logged-in users
+        fetch('/api/complete_onboarding', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'}
+        }).catch(error => console.log('Could not mark onboarding complete:', error));
+    }
+}
+
+function previousOnboardingStep() {
+    if (currentOnboardingStep > 1) {
+        document.getElementById(`onboarding-step-${currentOnboardingStep}`).style.display = 'none';
+        currentOnboardingStep--;
+        document.getElementById(`onboarding-step-${currentOnboardingStep}`).style.display = 'block';
+        updateOnboardingButtons();
+    }
+}
+
+function updateOnboardingButtons() {
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const stepIndicator = document.getElementById('stepIndicator');
+    
+    // Update step indicator
+    stepIndicator.textContent = `${currentOnboardingStep} av ${totalOnboardingSteps}`;
+    
+    // Show/hide previous button
+    prevBtn.style.display = currentOnboardingStep > 1 ? 'block' : 'none';
+    
+    // Update next button text
+    if (currentOnboardingStep === totalOnboardingSteps) {
+        nextBtn.innerHTML = 'Avsluta <i class="fas fa-check ms-1"></i>';
+    } else {
+        nextBtn.innerHTML = 'Nästa <i class="fas fa-arrow-right ms-1"></i>';
+    }
+}
+
+// Tooltip tour system
+let currentTooltipStep = 0;
+const tooltipSteps = [
+    {
+        element: '.navbar-brand',
+        title: 'NeilanX Logo',
+        text: 'Klicka här för att gå tillbaka till startsidan när som helst.',
+        position: 'bottom'
+    },
+    {
+        element: '[href="/upload"]',
+        title: 'Ladda upp recensioner',
+        text: 'Här laddar du upp dina CSV-filer eller klistrar in text för analys.',
+        position: 'bottom'
+    },
+    {
+        element: '[href="/dashboard"]',
+        title: 'Dashboard',
+        text: 'Se alla dina analyser och resultat på ett ställe.',
+        position: 'bottom'
+    },
+    {
+        element: '[href="/demo"]',
+        title: 'Prova demo',
+        text: 'Testa NeilanX utan registrering med våra exempel-recensioner.',
+        position: 'bottom'
+    }
+];
+
+function startTooltipTour() {
+    if (tooltipSteps.length > 0) {
+        currentTooltipStep = 0;
+        showTooltip();
+    }
+}
+
+function showTooltip() {
+    if (currentTooltipStep >= tooltipSteps.length) {
+        hideTooltip();
+        return;
+    }
+    
+    const step = tooltipSteps[currentTooltipStep];
+    const element = document.querySelector(step.element);
+    
+    if (!element) {
+        nextTooltip();
+        return;
+    }
+    
+    const tooltipOverlay = document.getElementById('tooltipOverlay');
+    const tooltipBox = document.getElementById('tooltipBox');
+    const tooltipTitle = document.getElementById('tooltipTitle');
+    const tooltipText = document.getElementById('tooltipText');
+    
+    // Update content
+    tooltipTitle.textContent = step.title;
+    tooltipText.textContent = step.text;
+    
+    // Position tooltip
+    const rect = element.getBoundingClientRect();
+    const boxHeight = 150; // Approximate height
+    
+    let top, left;
+    
+    switch (step.position) {
+        case 'bottom':
+            top = rect.bottom + 10;
+            left = rect.left + (rect.width / 2) - 150;
+            break;
+        case 'top':
+            top = rect.top - boxHeight - 10;
+            left = rect.left + (rect.width / 2) - 150;
+            break;
+        case 'right':
+            top = rect.top + (rect.height / 2) - (boxHeight / 2);
+            left = rect.right + 10;
+            break;
+        case 'left':
+            top = rect.top + (rect.height / 2) - (boxHeight / 2);
+            left = rect.left - 310;
+            break;
+        default:
+            top = rect.bottom + 10;
+            left = rect.left;
+    }
+    
+    // Ensure tooltip stays in viewport
+    top = Math.max(10, Math.min(top, window.innerHeight - boxHeight - 10));
+    left = Math.max(10, Math.min(left, window.innerWidth - 310));
+    
+    tooltipBox.style.top = top + 'px';
+    tooltipBox.style.left = left + 'px';
+    
+    // Highlight element
+    element.style.position = 'relative';
+    element.style.zIndex = '10001';
+    element.style.boxShadow = '0 0 0 4px rgba(0,123,255,0.5)';
+    
+    tooltipOverlay.style.display = 'block';
+}
+
+function nextTooltip() {
+    // Remove highlighting from current element
+    if (currentTooltipStep < tooltipSteps.length) {
+        const step = tooltipSteps[currentTooltipStep];
+        const element = document.querySelector(step.element);
+        if (element) {
+            element.style.position = '';
+            element.style.zIndex = '';
+            element.style.boxShadow = '';
+        }
+    }
+    
+    currentTooltipStep++;
+    showTooltip();
+}
+
+function hideTooltip() {
+    // Remove highlighting from current element
+    if (currentTooltipStep < tooltipSteps.length) {
+        const step = tooltipSteps[currentTooltipStep];
+        const element = document.querySelector(step.element);
+        if (element) {
+            element.style.position = '';
+            element.style.zIndex = '';
+            element.style.boxShadow = '';
+        }
+    }
+    
+    document.getElementById('tooltipOverlay').style.display = 'none';
+    localStorage.setItem('neilanx_tooltip_tour_completed', 'true');
+}
+
+function skipTour() {
+    hideTooltip();
+}
+
+// Auto-trigger onboarding for new users
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if user has completed onboarding
+    const onboardingCompleted = localStorage.getItem('neilanx_onboarding_completed');
+    const tooltipTourCompleted = localStorage.getItem('neilanx_tooltip_tour_completed');
+    
+    // Only show for new users (not logged in and hasn't seen onboarding)
+    const isLoggedIn = document.querySelector('[href="/dashboard"]') !== null;
+    const hasExistingTutorial = document.getElementById('tutorialOverlay') !== null;
+    
+    // If there's an existing tutorial (like on upload page), let it handle onboarding
+    if (hasExistingTutorial && isLoggedIn) {
+        // Let the existing tutorial system handle it, don't show modal
+        return;
+    }
+    
+    // Check server-side state for mutual exclusion
+    const showOnboardingModal = document.body.dataset.showOnboarding === 'true';
+    const showTutorial = document.body.dataset.showTutorial === 'true';
+    
+    // Ensure mutual exclusion - never show both
+    if (showTutorial) {
+        // Server says to show tutorial, don't show modal
+        return;
+    }
+    
+    if (showOnboardingModal && isLoggedIn) {
+        // Server explicitly says to show onboarding modal
+        setTimeout(() => {
+            const modal = new bootstrap.Modal(document.getElementById('onboardingModal'));
+            modal.show();
+        }, 1000);
+        return;
+    }
+    
+    if (!onboardingCompleted && !isLoggedIn) {
+        // Show onboarding modal after a short delay for anonymous users
+        setTimeout(() => {
+            const modal = new bootstrap.Modal(document.getElementById('onboardingModal'));
+            modal.show();
+        }, 1500);
+    } else if (!tooltipTourCompleted && isLoggedIn && !hasExistingTutorial) {
+        // Show tooltip tour for logged in users who haven't seen it (but not on upload page)
+        setTimeout(() => {
+            startTooltipTour();
+        }, 2000);
+    }
+});
+
+// Add manual trigger function
+window.startOnboarding = function() {
+    currentOnboardingStep = 1;
+    document.querySelectorAll('.onboarding-step').forEach(step => step.style.display = 'none');
+    document.getElementById('onboarding-step-1').style.display = 'block';
+    updateOnboardingButtons();
+    
+    const modal = new bootstrap.Modal(document.getElementById('onboardingModal'));
+    modal.show();
+};
+
+window.startTooltipTour = startTooltipTour;
+</script>

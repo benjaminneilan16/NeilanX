@@ -1,0 +1,771 @@
+{% extends "base.html" %}
+
+{% block title %}Ladda upp recensioner - NeilanX{% endblock %}
+
+{% block content %}
+<!-- Tutorial Overlay -->
+{% if show_tutorial %}
+<div id="tutorialOverlay" class="tutorial-overlay">
+    <div class="tutorial-modal">
+        <div class="tutorial-header">
+            <h3><i class="fas fa-graduation-cap me-2"></i>Välkommen till NeilanX!</h3>
+            <button type="button" class="btn-close tutorial-close" onclick="closeTutorial()"></button>
+        </div>
+        <div class="tutorial-content" id="tutorialContent">
+            <!-- Tutorial steps will be dynamically loaded here -->
+        </div>
+        <div class="tutorial-footer">
+            <button type="button" class="btn btn-outline-secondary" onclick="closeTutorial()">Hoppa över</button>
+            <div class="tutorial-navigation">
+                <button type="button" class="btn btn-outline-primary" id="prevStep" onclick="previousStep()" disabled>Föregående</button>
+                <span class="tutorial-progress mx-3" id="stepIndicator">1 av 4</span>
+                <button type="button" class="btn btn-primary" id="nextStep" onclick="nextStep()">Nästa</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Enhanced Upload Experience -->
+            {% include 'enhanced_upload.html' %}
+            
+            <!-- Header -->
+            <div class="text-center mb-5" id="uploadHeader">
+                <h1 class="h2 mb-3">Ladda upp recensioner</h1>
+                <p class="lead text-muted">Ladda upp dina kundrecensioner för AI-analys</p>
+                {% if show_tutorial %}
+                <div class="alert alert-info tutorial-welcome">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>Första gången?</strong> Vi guidar dig genom processen! 
+                    <button class="btn btn-link p-0 ms-2" onclick="startTutorial()">Starta guiden</button>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Usage Info -->
+            {% if user.plan == 'free' %}
+            <div class="alert alert-info">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-info-circle me-3"></i>
+                    <div>
+                        <strong>Freemium-plan:</strong> Du kan analysera upp till 100 recensioner per månad gratis.
+                        <a href="{{ url_for('pricing') }}" class="alert-link">Uppgradera för obegränsad access</a>.
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Upload Methods -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <!-- Method Selection Tabs -->
+                    <ul class="nav nav-tabs mb-4" id="uploadTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="csv-tab" data-bs-toggle="tab" data-bs-target="#csv-upload" type="button" role="tab">
+                                <i class="fas fa-file-csv me-2"></i>CSV-fil
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="text-tab" data-bs-toggle="tab" data-bs-target="#text-input" type="button" role="tab">
+                                <i class="fas fa-edit me-2"></i>Skriv text
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="image-tab" data-bs-toggle="tab" data-bs-target="#image-upload" type="button" role="tab">
+                                <i class="fas fa-image me-2"></i>Bild (OCR)
+                            </button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="uploadTabsContent">
+                        <!-- CSV Upload Tab -->
+                        <div class="tab-pane fade show active" id="csv-upload" role="tabpanel">
+                            <form method="POST" enctype="multipart/form-data" id="uploadForm">
+                                <div class="mb-4">
+                                    <label for="file" class="form-label">Välj CSV-fil</label>
+                                    <input type="file" class="form-control form-control-lg" id="file" name="file" accept=".csv">
+                                    <div class="form-text">
+                                        Endast CSV-filer accepteras. Maximal filstorlek: 16MB.
+                                    </div>
+                                </div>
+
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg" id="uploadBtn">
+                                        <i class="fas fa-upload me-2"></i>Ladda upp och analysera
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Text Input Tab -->
+                        <div class="tab-pane fade" id="text-input" role="tabpanel">
+                            <form method="POST" id="textForm">
+                                <input type="hidden" name="input_type" value="text">
+                                <div class="mb-4">
+                                    <label for="reviews_text" class="form-label">Klistra in recensioner</label>
+                                    <textarea class="form-control" id="reviews_text" name="reviews_text" rows="12" 
+                                              placeholder="Klistra in recensioner här, en per rad. Exempel:&#10;&#10;Fantastisk produkt! Mycket nöjd med köpet.&#10;Dålig kvalitet, rekommenderar inte.&#10;Bra service och snabb leverans."></textarea>
+                                    <div class="form-text">
+                                        Skriv eller klistra in recensioner, en per rad. Max 100 recensioner per uppladdning.
+                                    </div>
+                                </div>
+
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg" id="textBtn">
+                                        <i class="fas fa-brain me-2"></i>Analysera text
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Image Upload Tab -->
+                        <div class="tab-pane fade" id="image-upload" role="tabpanel">
+                            <form method="POST" enctype="multipart/form-data" id="imageForm">
+                                <input type="hidden" name="input_type" value="image">
+                                <div class="mb-4">
+                                    <label for="image_file" class="form-label">Välj bild med recensioner</label>
+                                    <input type="file" class="form-control form-control-lg" id="image_file" name="file" 
+                                           accept=".png,.jpg,.jpeg,.gif,.bmp,.tiff">
+                                    <div class="form-text">
+                                        Stöds: PNG, JPG, JPEG, GIF, BMP, TIFF. Max filstorlek: 5MB.
+                                        Ladda upp skärmdumpar från recensionswebbsidor, e-post eller sociala medier.
+                                    </div>
+                                </div>
+
+                                <div class="alert alert-info">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-lightbulb me-3"></i>
+                                        <div>
+                                            <strong>Exempel på bra bilder:</strong> Skärmdumpar från recensionswebbsidor, 
+                                            sociala medier-kommentarer, eller e-postmeddelanden med kundrecensioner. 
+                                            Se till att texten är tydligt läsbar.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- GDPR Consent -->
+                                <div class="mb-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="gdpr_consent" name="gdpr_consent" value="1" required>
+                                        <label class="form-check-label" for="gdpr_consent">
+                                            Jag samtycker till att bilden bearbetas för textextrahering. 
+                                            <small class="text-muted">(Bilden raderas omedelbart efter bearbetning för integritetsskydd)</small>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg" id="imageBtn">
+                                        <i class="fas fa-search me-2"></i>Extrahera text och analysera
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Format Guides -->
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-header bg-light">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-question-circle me-2"></i>Formatguider och tips
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <!-- Format Guide Tabs -->
+                    <ul class="nav nav-pills mb-3" id="formatTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="csv-guide-tab" data-bs-toggle="pill" data-bs-target="#csv-guide" type="button" role="tab">
+                                CSV-format
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="ocr-guide-tab" data-bs-toggle="pill" data-bs-target="#ocr-guide" type="button" role="tab">
+                                OCR-tips
+                            </button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="formatTabsContent">
+                        <!-- CSV Guide -->
+                        <div class="tab-pane fade show active" id="csv-guide" role="tabpanel">
+                            <p class="mb-3">För bästa resultat, se till att din CSV-fil innehåller följande kolumner:</p>
+                            
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Kolumnnamn</th>
+                                            <th>Beskrivning</th>
+                                            <th>Krävs</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><code>review</code> eller <code>text</code></td>
+                                            <td>Recensionens text</td>
+                                            <td><span class="badge bg-danger">Ja</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>rating</code> eller <code>betyg</code></td>
+                                    <td>Stjärnbetyg (1-5)</td>
+                                    <td><span class="badge bg-secondary">Nej</span></td>
+                                </tr>
+                                <tr>
+                                    <td><code>platform</code> eller <code>källa</code></td>
+                                    <td>Källa eller kategori</td>
+                                    <td><span class="badge bg-secondary">Nej</span></td>
+                                </tr>
+                                <tr>
+                                    <td><code>name</code> eller <code>namn</code></td>
+                                    <td>Recensentens namn</td>
+                                    <td><span class="badge bg-secondary">Nej</span></td>
+                                </tr>
+                                <tr>
+                                    <td><code>date</code> eller <code>datum</code></td>
+                                    <td>Recensionsdatum (YYYY-MM-DD)</td>
+                                    <td><span class="badge bg-secondary">Nej</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                            <div class="alert alert-light mt-3">
+                                <h6><i class="fas fa-lightbulb me-2"></i>Tips:</h6>
+                                <ul class="mb-0">
+                                    <li>Systemet kan automatiskt identifiera kolumner även om de har andra namn</li>
+                                    <li>Både komma (,) och semikolon (;) fungerar som avgränsare</li>
+                                    <li>UTF-8 encoding rekommenderas för svenska tecken</li>
+                                    <li>Första raden ska innehålla kolumnrubriker</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- OCR Guide -->
+                        <div class="tab-pane fade" id="ocr-guide" role="tabpanel">
+                            <p class="mb-3">OCR (Optical Character Recognition) extraherar text från bilder. Här är tips för bästa resultat:</p>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="text-success"><i class="fas fa-check me-2"></i>Perfekt för OCR:</h6>
+                                    <ul>
+                                        <li><strong>Recensionswebbsidor</strong> skärmdumpar</li>
+                                        <li><strong>Sociala medier</strong> kommentarer</li>
+                                        <li><strong>E-post</strong> med kundrecensioner</li>
+                                        <li><strong>Kundformulär</strong> feedback</li>
+                                        <li>Webbsidor med kundmottagningar</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="text-danger"><i class="fas fa-times me-2"></i>Fungerar dåligt:</h6>
+                                    <ul>
+                                        <li>Suddiga eller oskärpa bilder</li>
+                                        <li>Text med dålig kontrast</li>
+                                        <li>Handskriven text</li>
+                                        <li>Bilder med bara logotyper</li>
+                                        <li>Mycket små textstorlekar (&lt;12px)</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="alert alert-info mt-3">
+                                <h6><i class="fas fa-magic me-2"></i>Så fungerar det:</h6>
+                                <ol class="mb-0">
+                                    <li>Ladda upp bild med recensioner</li>
+                                    <li>OCR extraherar automatiskt all text</li>
+                                    <li>Texten delas upp i separata recensioner</li>
+                                    <li>Varje textdel analyseras för sentiment</li>
+                                    <li>Resultaten presenteras i din dashboard</li>
+                                </ol>
+                            </div>
+
+                            <div class="alert alert-warning">
+                                <strong>Integritetsskydd:</strong> Alla bilder raderas omedelbart efter textextrahering för att skydda kunddata enligt GDPR. 
+                                Endast den extraherade texten sparas för analys.
+                            </div>
+
+                            <div class="alert alert-success">
+                                <strong>Rekommendation:</strong> Ta en skärmdump av recensioner från webbsidor eller appar 
+                                för bästa resultat. Kontrollera att all text är tydligt läsbar innan uppladdning.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example CSV -->
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-header bg-light">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-file-csv me-2"></i>Exempel CSV
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <pre class="bg-light p-3 rounded"><code>review,rating,källa,name,date
+"Fantastisk service och snabb leverans!",5,Webbshop,Anna Andersson,2024-01-15
+"Produkten var okej men supporten kunde vara bättre",3,E-post,Erik Nilsson,2024-01-14
+"Mycket nöjd med köpet, rekommenderar starkt",5,Formulär,Maria Johansson,2024-01-13</code></pre>
+
+                    <div class="alert alert-success mt-3">
+                        <h6><i class="fas fa-play-circle me-2"></i>Behöver hjälp?</h6>
+                        <p class="mb-2">Vi har skapat en kort guide som visar exakt hur du förbereder din CSV-fil:</p>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <button class="btn btn-outline-success btn-sm" onclick="showCSVGuide()">
+                                <i class="fas fa-graduation-cap me-1"></i>Steg-för-steg guide
+                            </button>
+                            <button class="btn btn-outline-success btn-sm" onclick="downloadExampleCSV()">
+                                <i class="fas fa-download me-1"></i>Ladda ner mall
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('uploadForm');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const originalBtnText = uploadBtn.innerHTML;
+
+    form.addEventListener('submit', function() {
+        uploadBtn.disabled = true;
+        uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Bearbetar...';
+    });
+
+    // Video guide and example CSV functions
+    window.showCSVGuide = function() {
+        // Create modal for video guide
+        const modal = document.createElement('div');
+        modal.className = 'modal fade';
+        modal.innerHTML = `
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"><i class="fas fa-graduation-cap me-2"></i>CSV-Förberedelseguide: Steg-för-steg instruktioner</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="bg-light p-4 rounded mb-4" style="background: linear-gradient(135deg, #f0f8ff 0%, #e8f4fd 100%) !important;">
+                            <div class="text-center mb-4">
+                                <h2 class="text-primary mb-3">📚 CSV-Förberedelseguide</h2>
+                                <p class="lead">Följ dessa enkla steg för att förbereda din CSV-fil perfekt för analys</p>
+                                <div class="text-center mb-4">
+                                    <div class="bg-white p-3 rounded shadow-sm d-inline-block">
+                                        <div class="row g-3 text-center">
+                                            <div class="col">
+                                                <div class="badge bg-primary-subtle text-primary fs-6 p-2">📊 Excel/Sheets</div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="text-muted">→</div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="badge bg-success-subtle text-success fs-6 p-2">📄 CSV-fil</div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="text-muted">→</div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="badge bg-info-subtle text-info fs-6 p-2">🎯 AI-analys</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white p-4 rounded shadow-sm">
+                                <h3 class="h5 mb-4">📋 Steg-för-steg instruktion:</h3>
+                                
+                                <div class="mb-3 p-3 bg-primary bg-opacity-10 border-start border-primary border-3">
+                                    <strong class="text-primary">Steg 1:</strong> Öppna Excel, Google Sheets, eller liknande kalkylprogram
+                                </div>
+                                
+                                <div class="mb-3 p-3 bg-primary bg-opacity-10 border-start border-primary border-3">
+                                    <strong class="text-primary">Steg 2:</strong> Skapa följande kolumnrubriker på rad 1:<br>
+                                    <code class="bg-white p-2 rounded d-inline-block mt-2">review | rating | källa | name | date</code>
+                                </div>
+                                
+                                <div class="mb-3 p-3 bg-primary bg-opacity-10 border-start border-primary border-3">
+                                    <strong class="text-primary">Steg 3:</strong> Fyll i dina recensioner, en per rad:<br>
+                                    <ul class="mt-2 mb-0">
+                                        <li><strong>review:</strong> Hela recensionens text (obligatorisk)</li>
+                                        <li><strong>rating:</strong> Betyg 1-5 (valfritt)</li>
+                                        <li><strong>källa:</strong> T.ex. 'Webbshop', 'E-post' (valfritt)</li>
+                                        <li><strong>name:</strong> Kundens namn (valfritt)</li>
+                                        <li><strong>date:</strong> Datum YYYY-MM-DD (valfritt)</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="mb-3 p-3 bg-primary bg-opacity-10 border-start border-primary border-3">
+                                    <strong class="text-primary">Steg 4:</strong> Spara filen som CSV-format:<br>
+                                    <em>Arkiv → Spara som → CSV (kommaseparerad)</em>
+                                </div>
+                                
+                                <div class="p-3 bg-warning bg-opacity-10 border-start border-warning border-3">
+                                    <strong class="text-warning-emphasis">💡 Viktiga tips:</strong><br>
+                                    <ul class="mt-2 mb-0">
+                                        <li>Använd citattecken runt texter som innehåller kommatecken</li>
+                                        <li>UTF-8 encoding för svenska tecken (åäö)</li>
+                                        <li>Max 1000 recensioner per uppladdning</li>
+                                        <li>Systemet identifierar automatiskt även andra kolumnnamn</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="text-center mt-4">
+                                    <button type="button" class="btn btn-primary btn-lg" onclick="downloadExampleCSV()">
+                                        📥 Ladda ner exempel-CSV
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-success">
+                            <i class="fas fa-lightbulb me-2"></i>
+                            <strong>Behöver du mer hjälp?</strong> Använd vår live chat (blå knapp längst ner höger) för personlig support!
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Stäng</button>
+                        <button type="button" class="btn btn-primary" onclick="downloadExampleCSV()">
+                            <i class="fas fa-download me-1"></i>Ladda ner mall
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        const bsModal = new bootstrap.Modal(modal);
+        bsModal.show();
+        
+        // Remove modal after hiding
+        modal.addEventListener('hidden.bs.modal', function() {
+            document.body.removeChild(modal);
+        });
+    };
+
+    window.downloadExampleCSV = function() {
+        const csvContent = `review,rating,källa,name,date
+"Fantastisk service och snabb leverans!",5,Webbshop,Anna Andersson,2024-01-15
+"Produkten var okej men supporten kunde vara bättre",3,E-post,Erik Nilsson,2024-01-14
+"Mycket nöjd med köpet, rekommenderar starkt",5,Formulär,Maria Johansson,2024-01-13
+"Bra kvalitet och rimligt pris",4,Telefon,Lars Pettersson,2024-01-12
+"Utmärkt kundservice, hjälpsam personal",5,Chat,Ingrid Svensson,2024-01-11`;
+        
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'neilanx-exempel-recensioner.csv';
+        link.click();
+        URL.revokeObjectURL(link.href);
+    };
+
+    // Reset button if form submission fails
+    window.addEventListener('pageshow', function() {
+        uploadBtn.disabled = false;
+        uploadBtn.innerHTML = originalBtnText;
+    });
+});
+</script>
+
+<!-- Tutorial CSS and JavaScript -->
+{% if show_tutorial %}
+<style>
+.tutorial-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tutorial-modal {
+    background: white;
+    border-radius: 12px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.tutorial-header {
+    padding: 20px;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tutorial-content {
+    padding: 25px;
+    min-height: 300px;
+}
+
+.tutorial-footer {
+    padding: 20px;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tutorial-navigation {
+    display: flex;
+    align-items: center;
+}
+
+.tutorial-welcome {
+    border: 2px solid #0d6efd;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { border-color: #0d6efd; }
+    50% { border-color: #6c757d; }
+    100% { border-color: #0d6efd; }
+}
+
+.tutorial-highlight {
+    border: 3px solid #ffc107 !important;
+    border-radius: 8px !important;
+    animation: glow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from { box-shadow: 0 0 5px #ffc107; }
+    to { box-shadow: 0 0 20px #ffc107; }
+}
+
+.sample-csv {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 15px;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    margin: 15px 0;
+    overflow-x: auto;
+}
+
+.tutorial-step {
+    display: none;
+}
+
+.tutorial-step.active {
+    display: block;
+}
+
+.feature-highlight {
+    background: linear-gradient(45deg, #e3f2fd, #bbdefb);
+    border-left: 4px solid #2196f3;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 4px;
+}
+</style>
+
+<script>
+let currentStep = 0;
+const totalSteps = 4;
+
+const tutorialSteps = [
+    {
+        title: "Steg 1: Välkommen till NeilanX",
+        content: `
+            <h4><i class="fas fa-star text-warning me-2"></i>Perfekt för svenska e-handelsbranschen!</h4>
+            <p>NeilanX hjälper dig att förstå vad dina kunder verkligen tycker genom AI-analys av recensioner från Google, Trustpilot och andra plattformar.</p>
+            
+            <div class="feature-highlight">
+                <h6><i class="fas fa-brain me-2"></i>Vad du får:</h6>
+                <ul class="mb-0">
+                    <li><strong>Sentimentanalys:</strong> Positiv/negativ/neutral feedback</li>
+                    <li><strong>Nyckelord:</strong> Vad kunder pratar om mest</li>
+                    <li><strong>PDF-rapporter:</strong> Professionella sammanfattningar</li>
+                    <li><strong>Trendanalys:</strong> Förbättringar över tid</li>
+                </ul>
+            </div>
+            
+            <p class="text-muted mt-3">Låt oss börja med att ladda upp dina första recensioner!</p>
+        `
+    },
+    {
+        title: "Steg 2: Tre sätt att ladda upp recensioner",
+        content: `
+            <h4><i class="fas fa-upload text-primary me-2"></i>Flexibel inmatning för alla situationer</h4>
+            <p>Vi stöder tre olika sätt att få in dina recensioner:</p>
+            
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="text-center p-3 border rounded">
+                        <i class="fas fa-file-csv fa-2x text-success mb-2"></i>
+                        <h6>CSV-fil</h6>
+                        <small class="text-muted">Exportera från ditt system</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center p-3 border rounded">
+                        <i class="fas fa-edit fa-2x text-info mb-2"></i>
+                        <h6>Skriv/Klistra</h6>
+                        <small class="text-muted">Direkt textinmatning</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center p-3 border rounded">
+                        <i class="fas fa-camera fa-2x text-warning mb-2"></i>
+                        <h6>Skärmdump</h6>
+                        <small class="text-muted">OCR från bilder</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="alert alert-info mt-3">
+                <i class="fas fa-lightbulb me-2"></i>
+                <strong>Tips:</strong> CSV-filer ger bäst resultat för stora mängder recensioner!
+            </div>
+        `
+    },
+    {
+        title: "Steg 3: CSV-format exempel",
+        content: `
+            <h4><i class="fas fa-table text-success me-2"></i>Så här ska din CSV-fil se ut</h4>
+            <p>För bästa resultat, organisera din CSV-fil med dessa kolumner:</p>
+            
+            <div class="sample-csv">
+review_text,rating,platform,reviewer_name,review_date
+"Fantastisk service och snabb leverans!",5,Google,Anna Andersson,2024-01-15
+"Produkten var okej men supporten kunde vara bättre",3,Trustpilot,Erik Nilsson,2024-01-14
+"Supernöjd! Rekommenderar verkligen!",5,Shopify,Maria Larsson,2024-01-13
+"Leveransen dröjde men kvaliteten var bra",4,Google,Johan Svensson,2024-01-12
+            </div>
+            
+            <div class="row g-3 mt-3">
+                <div class="col-md-6">
+                    <h6><i class="fas fa-check-circle text-success me-2"></i>Obligatoriska fält:</h6>
+                    <ul class="small">
+                        <li><strong>review_text:</strong> Recensionens text</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h6><i class="fas fa-plus-circle text-info me-2"></i>Extra fält (valfria):</h6>
+                    <ul class="small">
+                        <li><strong>rating:</strong> 1-5 stjärnor</li>
+                        <li><strong>platform:</strong> Google/Trustpilot/etc</li>
+                        <li><strong>reviewer_name:</strong> Kundens namn</li>
+                        <li><strong>review_date:</strong> Datum för recensionen</li>
+                    </ul>
+                </div>
+            </div>
+        `
+    },
+    {
+        title: "Steg 4: Ladda upp och få resultat!",
+        content: `
+            <h4><i class="fas fa-rocket text-primary me-2"></i>Klart att starta analysen!</h4>
+            <p>Nu är du redo att ladda upp dina recensioner och få djupa insikter om kundernas åsikter.</p>
+            
+            <div class="feature-highlight">
+                <h6><i class="fas fa-clock me-2"></i>Vad händer nu:</h6>
+                <ol class="mb-0">
+                    <li>Du laddar upp din CSV-fil eller skriver in text</li>
+                    <li>AI:n analyserar sentimenten på svenska</li>
+                    <li>Du får resultaten på dashboarden inom sekunder</li>
+                    <li>Generera professionella PDF-rapporter att dela</li>
+                </ol>
+            </div>
+            
+            <div class="alert alert-success">
+                <i class="fas fa-gift me-2"></i>
+                <strong>Gratis att börja:</strong> 100 recensioner per månad utan kostnad!
+            </div>
+            
+            <p class="text-center mt-4">
+                <button class="btn btn-primary btn-lg" onclick="closeTutorial(); highlightUploadArea();">
+                    <i class="fas fa-upload me-2"></i>Börja ladda upp nu!
+                </button>
+            </p>
+        `
+    }
+];
+
+function startTutorial() {
+    document.getElementById('tutorialOverlay').style.display = 'flex';
+    currentStep = 0;
+    showStep(currentStep);
+}
+
+function closeTutorial() {
+    document.getElementById('tutorialOverlay').style.display = 'none';
+}
+
+function nextStep() {
+    if (currentStep < totalSteps - 1) {
+        currentStep++;
+        showStep(currentStep);
+    }
+}
+
+function previousStep() {
+    if (currentStep > 0) {
+        currentStep--;
+        showStep(currentStep);
+    }
+}
+
+function showStep(stepIndex) {
+    const content = document.getElementById('tutorialContent');
+    const step = tutorialSteps[stepIndex];
+    
+    content.innerHTML = `
+        <div class="tutorial-step active">
+            <h4>${step.title}</h4>
+            ${step.content}
+        </div>
+    `;
+    
+    // Update navigation
+    document.getElementById('prevStep').disabled = stepIndex === 0;
+    document.getElementById('nextStep').textContent = stepIndex === totalSteps - 1 ? 'Stäng' : 'Nästa';
+    document.getElementById('stepIndicator').textContent = `${stepIndex + 1} av ${totalSteps}`;
+    
+    // Close tutorial on last step's next button
+    if (stepIndex === totalSteps - 1) {
+        document.getElementById('nextStep').onclick = closeTutorial;
+    } else {
+        document.getElementById('nextStep').onclick = nextStep;
+    }
+}
+
+function highlightUploadArea() {
+    const uploadCard = document.querySelector('.card.border-0.shadow-sm');
+    if (uploadCard) {
+        uploadCard.classList.add('tutorial-highlight');
+        setTimeout(() => {
+            uploadCard.classList.remove('tutorial-highlight');
+        }, 3000);
+    }
+}
+
+// Auto-start tutorial for new users
+document.addEventListener('DOMContentLoaded', function() {
+    // Delay to ensure page is fully loaded
+    setTimeout(() => {
+        if (document.getElementById('tutorialOverlay')) {
+            startTutorial();
+        }
+    }, 1000);
+});
+</script>
+{% endif %}
+
+{% endblock %}

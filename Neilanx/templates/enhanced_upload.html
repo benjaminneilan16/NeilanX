@@ -1,0 +1,390 @@
+<!-- Enhanced Upload Experience Component -->
+<div id="uploadEnhancements">
+    <!-- First-time User Welcome -->
+    <div id="firstTimeWelcome" class="alert alert-info border-0 shadow-sm mb-4" style="display: none;">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h6 class="mb-2">
+                    <i class="fas fa-sparkles me-2"></i>
+                    Första gången du laddar upp recensioner?
+                </h6>
+                <p class="mb-0 text-muted">Låt oss hjälpa dig att förbereda dina data för bästa resultat!</p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <button class="btn btn-info btn-sm" onclick="showUploadGuide()">
+                    <i class="fas fa-graduation-cap me-1"></i>Visa guide
+                </button>
+                <button class="btn btn-outline-secondary btn-sm ms-2" onclick="hideFirstTimeWelcome()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Tracker -->
+    <div id="uploadProgressTracker" class="card border-0 shadow-sm mb-4" style="display: none;">
+        <div class="card-body">
+            <h6 class="mb-3">
+                <i class="fas fa-tasks me-2"></i>
+                Uppladdningsprocess
+            </h6>
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-primary rounded-circle p-2 me-2" id="step1Icon">
+                            <i class="fas fa-check text-white fa-sm"></i>
+                        </div>
+                        <small class="text-muted">Välj fil</small>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-light rounded-circle p-2 me-2" id="step2Icon">
+                            <i class="fas fa-upload text-muted fa-sm"></i>
+                        </div>
+                        <small class="text-muted">Ladda upp</small>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-light rounded-circle p-2 me-2" id="step3Icon">
+                            <i class="fas fa-brain text-muted fa-sm"></i>
+                        </div>
+                        <small class="text-muted">AI analyserar</small>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-light rounded-circle p-2 me-2" id="step4Icon">
+                            <i class="fas fa-chart-bar text-muted fa-sm"></i>
+                        </div>
+                        <small class="text-muted">Se resultat</small>
+                    </div>
+                </div>
+            </div>
+            <div class="progress mt-3" style="height: 6px;">
+                <div class="progress-bar bg-gradient-primary" style="width: 25%" id="overallProgress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Tips Panel -->
+    <div id="helpTipsPanel" class="card border-0 shadow-sm mb-4" style="display: none;">
+        <div class="card-header bg-light border-0">
+            <div class="d-flex justify-content-between align-items-center">
+                <h6 class="mb-0">
+                    <i class="fas fa-lightbulb me-2 text-warning"></i>
+                    Hjälpsamma tips
+                </h6>
+                <button class="btn-close" onclick="hideHelpTips()"></button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="d-flex">
+                        <i class="fas fa-file-csv fa-2x text-primary me-3 mt-1"></i>
+                        <div>
+                            <h6 class="mb-1">Perfekt CSV-format</h6>
+                            <small class="text-muted">Kolumner: review, rating, källa, name, date</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex">
+                        <i class="fas fa-language fa-2x text-success me-3 mt-1"></i>
+                        <div>
+                            <h6 class="mb-1">Svenska texter</h6>
+                            <small class="text-muted">Bäst resultat med svenska recensioner</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex">
+                        <i class="fas fa-list-ol fa-2x text-info me-3 mt-1"></i>
+                        <div>
+                            <h6 class="mb-1">Mängd data</h6>
+                            <small class="text-muted">Minst 10 recensioner för bra analys</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex">
+                        <i class="fas fa-clock fa-2x text-warning me-3 mt-1"></i>
+                        <div>
+                            <h6 class="mb-1">Snabb process</h6>
+                            <small class="text-muted">Analys tar vanligtvis 5-30 sekunder</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-3 text-center">
+                <button class="btn btn-outline-primary btn-sm" onclick="downloadSampleCSV()">
+                    <i class="fas fa-download me-1"></i>Ladda ner exempel-CSV
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- File Validation Feedback -->
+    <div id="fileValidationFeedback" class="alert alert-warning" style="display: none;">
+        <h6 class="mb-2">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            Tips för bättre resultat
+        </h6>
+        <ul id="validationMessages" class="mb-0">
+            <!-- Messages will be populated by JavaScript -->
+        </ul>
+    </div>
+</div>
+
+<script>
+// Enhanced Upload Experience
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if this is first time upload
+    const hasUploadedBefore = localStorage.getItem('neilanx_has_uploaded');
+    
+    if (!hasUploadedBefore) {
+        document.getElementById('firstTimeWelcome').style.display = 'block';
+        showUploadProgressTracker();
+    }
+});
+
+function showUploadGuide() {
+    document.getElementById('helpTipsPanel').style.display = 'block';
+    // Also show the step-by-step guide in modal
+    showStepByStepGuide();
+}
+
+function hideFirstTimeWelcome() {
+    document.getElementById('firstTimeWelcome').style.display = 'none';
+    localStorage.setItem('neilanx_first_time_dismissed', 'true');
+}
+
+function showUploadProgressTracker() {
+    document.getElementById('uploadProgressTracker').style.display = 'block';
+}
+
+function hideHelpTips() {
+    document.getElementById('helpTipsPanel').style.display = 'none';
+}
+
+function updateUploadProgress(step) {
+    const icons = ['step1Icon', 'step2Icon', 'step3Icon', 'step4Icon'];
+    const progressBar = document.getElementById('overallProgress');
+    
+    // Update icons
+    for (let i = 0; i < step; i++) {
+        const icon = document.getElementById(icons[i]);
+        icon.className = 'bg-primary rounded-circle p-2 me-2';
+        icon.innerHTML = '<i class="fas fa-check text-white fa-sm"></i>';
+    }
+    
+    // Update progress bar
+    const percentage = (step / 4) * 100;
+    progressBar.style.width = percentage + '%';
+    
+    if (step === 4) {
+        // Mark as completed
+        localStorage.setItem('neilanx_has_uploaded', 'true');
+        
+        // Hide progress after delay
+        setTimeout(() => {
+            document.getElementById('uploadProgressTracker').style.display = 'none';
+        }, 3000);
+    }
+}
+
+function validateUploadFile(file) {
+    const feedback = document.getElementById('fileValidationFeedback');
+    const messages = document.getElementById('validationMessages');
+    
+    if (!file) return;
+    
+    const warnings = [];
+    const tips = [];
+    
+    // File size check
+    const sizeMB = file.size / (1024 * 1024);
+    if (sizeMB > 10) {
+        warnings.push('Filen är stor (' + sizeMB.toFixed(1) + ' MB). Detta kan ta längre tid att bearbeta.');
+    }
+    
+    // File type check
+    if (!file.name.toLowerCase().endsWith('.csv')) {
+        if (file.type.includes('text')) {
+            tips.push('Textfiler fungerar, men CSV ger bäst resultat med strukturerad data.');
+        } else {
+            warnings.push('Filtypen kan vara problematisk. CSV rekommenderas starkt.');
+        }
+    }
+    
+    // Show feedback if needed
+    if (warnings.length > 0 || tips.length > 0) {
+        messages.innerHTML = '';
+        
+        warnings.forEach(warning => {
+            const li = document.createElement('li');
+            li.innerHTML = '<i class="fas fa-exclamation-triangle text-warning me-1"></i>' + warning;
+            messages.appendChild(li);
+        });
+        
+        tips.forEach(tip => {
+            const li = document.createElement('li');
+            li.innerHTML = '<i class="fas fa-lightbulb text-info me-1"></i>' + tip;
+            messages.appendChild(li);
+        });
+        
+        feedback.style.display = 'block';
+    } else {
+        feedback.style.display = 'none';
+    }
+    
+    // Update progress
+    updateUploadProgress(1);
+}
+
+function downloadSampleCSV() {
+    // Create sample CSV content
+    const csvContent = `review,rating,källa,name,date
+"Fantastisk service och snabb leverans!",5,Webbshop,Anna Andersson,2024-09-01
+"Bra kvalitet men leveransen tog lite tid",4,E-post,Erik Nilsson,2024-09-02
+"Produkten var okej, ingenting speciellt",3,Google Reviews,Maria Johansson,2024-09-03
+"Mycket nöjd med köpet, rekommenderar!",5,Trustpilot,Lars Pettersson,2024-09-04
+"Dålig kundservice när jag behövde hjälp",2,Formulär,Ingrid Svensson,2024-09-05`;
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'exempel_recensioner.csv');
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+function showStepByStepGuide() {
+    // Create and show step-by-step modal
+    const modal = document.createElement('div');
+    modal.className = 'modal fade';
+    modal.innerHTML = `
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-graduation-cap me-2"></i>
+                        Steg-för-steg guide: Ladda upp recensioner
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="text-center">
+                                <div class="bg-primary bg-opacity-10 rounded-circle p-3 d-inline-flex mb-3">
+                                    <i class="fas fa-file-csv fa-2x text-primary"></i>
+                                </div>
+                                <h6>1. Förbered din CSV</h6>
+                                <p class="text-muted small">Skapa en CSV med kolumnerna: review, rating, källa, name, date</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="text-center">
+                                <div class="bg-success bg-opacity-10 rounded-circle p-3 d-inline-flex mb-3">
+                                    <i class="fas fa-upload fa-2x text-success"></i>
+                                </div>
+                                <h6>2. Ladda upp filen</h6>
+                                <p class="text-muted small">Dra och släpp eller klicka för att välja din CSV-fil</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="text-center">
+                                <div class="bg-warning bg-opacity-10 rounded-circle p-3 d-inline-flex mb-3">
+                                    <i class="fas fa-brain fa-2x text-warning"></i>
+                                </div>
+                                <h6>3. AI analyserar</h6>
+                                <p class="text-muted small">Vår svenska AI utför sentiment-analys automatiskt</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="text-center">
+                                <div class="bg-info bg-opacity-10 rounded-circle p-3 d-inline-flex mb-3">
+                                    <i class="fas fa-chart-pie fa-2x text-info"></i>
+                                </div>
+                                <h6>4. Se resultat</h6>
+                                <p class="text-muted small">Få detaljerade insikter och interaktiva visualiseringar</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="alert alert-info mt-4">
+                        <h6><i class="fas fa-lightbulb me-2"></i>Tips för bästa resultat:</h6>
+                        <ul class="mb-0">
+                            <li>Använd svenska recensioner för högsta precision</li>
+                            <li>Inkludera minst 10-20 recensioner för meningsfull analys</li>
+                            <li>Se till att betyg är numeriska (1-5)</li>
+                            <li>Använd UTF-8 encoding för svenska tecken</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary" onclick="downloadSampleCSV()">
+                        <i class="fas fa-download me-1"></i>Ladda ner exempel
+                    </button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                        Förstått!
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    const bsModal = new bootstrap.Modal(modal);
+    bsModal.show();
+    
+    // Clean up when modal is hidden
+    modal.addEventListener('hidden.bs.modal', function() {
+        document.body.removeChild(modal);
+    });
+}
+
+// Enhanced file input handling
+function enhanceFileInput(inputElement) {
+    inputElement.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            validateUploadFile(file);
+        }
+    });
+}
+
+// Auto-enhance existing file inputs and wire to actual form
+document.addEventListener('DOMContentLoaded', function() {
+    const fileInputs = document.querySelectorAll('input[type="file"]');
+    fileInputs.forEach(enhanceFileInput);
+    
+    // Wire to actual upload form
+    const uploadForm = document.getElementById('uploadForm');
+    if (uploadForm) {
+        uploadForm.addEventListener('submit', function(e) {
+            updateUploadProgress(2); // Upload step
+            
+            // Simulate progress during actual upload
+            setTimeout(() => updateUploadProgress(3), 1000); // Processing
+            setTimeout(() => updateUploadProgress(4), 3000); // Complete
+        });
+    }
+    
+    // Wire to file input change
+    const fileInput = document.getElementById('file');
+    if (fileInput) {
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                validateUploadFile(file);
+            }
+        });
+    }
+});
+</script>

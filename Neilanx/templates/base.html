@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block description %}Analysera kundrecensioner med svensk AI – sentiment, trender och rapporter på sekunder. Gratis för 100 recensioner/månad.{% endblock %}">
+    <meta name="keywords" content="kundrecensioner, sentimentanalys, AI, svensk, e-handel, kundanalys, feedback">
+    <meta name="author" content="NeilanX">
+    <title>{% block title %}NeilanX - AI-driven recensionsanalys{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"></noscript>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- Live Chat Styles -->
+    <style>
+        .live-chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .chat-toggle {
+            background: #2A77D4;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(42, 119, 212, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .chat-toggle:hover {
+            background: #1e5aa8;
+            transform: scale(1.1);
+        }
+        
+        .chat-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #EF4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .chat-window {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 350px;
+            height: 450px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .chat-header {
+            background: #2A77D4;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chat-title {
+            font-weight: 600;
+        }
+        
+        .chat-close {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .chat-body {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+        
+        .chat-message {
+            margin-bottom: 15px;
+        }
+        
+        .bot-message .message-content {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 3px solid #2A77D4;
+        }
+        
+        .user-message .message-content {
+            background: #2A77D4;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-left: 50px;
+            text-align: right;
+        }
+        
+        .quick-options button {
+            margin: 2px;
+            font-size: 11px;
+        }
+        
+        .chat-footer {
+            padding: 15px;
+            border-top: 1px solid #eee;
+            background: white;
+        }
+        
+        @media (max-width: 768px) {
+            .chat-window {
+                width: 300px;
+                height: 400px;
+            }
+        }
+    </style>
+    
+    {% block head %}{% endblock %}
+</head>
+<body{% if session.user_id %} data-logged-in="true"{% endif %}
+{%- if show_onboarding_modal %} data-show-onboarding="true"{% endif %}
+{%- if show_tutorial %} data-show-tutorial="true"{% endif %}>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" href="{{ url_for('index') }}">
+                <i class="fas fa-chart-line me-2"></i>NeilanX
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">Hem</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}#features">Funktioner</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('pricing') }}">Priser</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('contact') }}">Kontakt</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-outline-success ms-2" href="{{ url_for('demo') }}">
+                            <i class="fas fa-play me-1"></i>Prova Demo
+                        </a>
+                    </li>
+                    {% if session.user_id %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('upload_reviews') }}">Ladda upp</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('reports') }}">Rapporter</a>
+                        </li>
+                    {% endif %}
+                </ul>
+                
+                <ul class="navbar-nav">
+                    {% if session.user_id %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle me-1"></i>Konto
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logga ut</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('login') }}">Logga in</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-success ms-2 cta-button" href="{{ url_for('register') }}">
+                                <i class="fas fa-rocket me-1"></i>Prova nu
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container mt-3">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'error' else 'success' if category == 'success' else 'info' }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white mt-5 py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h5 class="text-primary">NeilanX</h5>
+                    <p class="text-light">AI-driven recensionsanalys för svenska e-handlare. Förstå dina kunder bättre med våra smarta verktyg.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-light"><i class="fab fa-linkedin fa-lg"></i></a>
+                        <a href="#" class="text-light"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="mailto:benjamin.neilan16@gmail.com" class="text-light"><i class="fas fa-envelope fa-lg"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <h6 class="text-white mb-3">Produkten</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{{ url_for('index') }}#features" class="text-light text-decoration-none">Funktioner</a></li>
+                        <li class="mb-2"><a href="{{ url_for('pricing') }}" class="text-light text-decoration-none">Priser</a></li>
+                        <li class="mb-2"><a href="{{ url_for('register') }}" class="text-light text-decoration-none">Kom igång</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2">
+                    <h6 class="text-white mb-3">Support</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="mailto:benjamin.neilan16@gmail.com" class="text-light text-decoration-none">Kontakt</a></li>
+                        <li class="mb-2"><a href="{{ url_for('faq') }}" class="text-light text-decoration-none">FAQ</a></li>
+                        <li class="mb-2"><a href="{{ url_for('support') }}" class="text-light text-decoration-none">Hjälp</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2">
+                    <h6 class="text-white mb-3">Företag</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{{ url_for('about') }}" class="text-light text-decoration-none">Om oss</a></li>
+                        <li class="mb-2"><a href="{{ url_for('careers') }}" class="text-light text-decoration-none">Karriär</a></li>
+                        <li class="mb-2"><a href="{{ url_for('press') }}" class="text-light text-decoration-none">Press</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2">
+                    <h6 class="text-white mb-3">Juridiskt</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{{ url_for('privacy_policy') }}" class="text-light text-decoration-none">Integritetspolicy</a></li>
+                        <li class="mb-2"><a href="{{ url_for('terms_of_service') }}" class="text-light text-decoration-none">Användarvillkor</a></li>
+                        <li class="mb-2"><a href="{{ url_for('gdpr') }}" class="text-light text-decoration-none">GDPR</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4 border-secondary">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-light small mb-0">© 2024 NeilanX. Alla rättigheter förbehållna.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="text-light small mb-0">Utvecklat i Sverige med <i class="fas fa-heart text-danger"></i></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Include Onboarding Modal -->
+    {% include 'onboarding_modal.html' %}
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
+    
+    <!-- Live Chat JavaScript -->
+    <script>
+        let chatOpen = false;
+        
+        function toggleChat() {
+            const chatWindow = document.getElementById('chat-window');
+            const chatBadge = document.getElementById('chatBadge');
+            
+            if (chatOpen) {
+                chatWindow.style.display = 'none';
+                chatBadge.style.display = 'none';
+            } else {
+                chatWindow.style.display = 'flex';
+                chatBadge.style.display = 'none';
+            }
+            chatOpen = !chatOpen;
+        }
+        
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                addMessage(message, 'user');
+                input.value = '';
+                
+                // Simulate bot response
+                setTimeout(() => {
+                    respondToUser(message);
+                }, 1000);
+            }
+        }
+        
+        function sendQuickMessage(message) {
+            addMessage(message, 'user');
+            setTimeout(() => {
+                respondToUser(message);
+            }, 1000);
+        }
+        
+        function addMessage(message, sender) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${sender}-message`;
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            
+            if (sender === 'user') {
+                contentDiv.innerHTML = message;
+            } else {
+                contentDiv.innerHTML = `<strong>NeilanX Support</strong><br>${message}`;
+            }
+            
+            messageDiv.appendChild(contentDiv);
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function respondToUser(userMessage) {
+            let response = '';
+            const msg = userMessage.toLowerCase();
+            
+            if (msg.includes('csv') || msg.includes('upload')) {
+                response = `För CSV-hjälp: Se till att din fil har kolumnerna 'review', 'rating', 'källa'. <a href="/upload" target="_blank">Gå till upload-sidan</a> för mer info och steg-för-steg guide! 📁`;
+            } else if (msg.includes('pris') || msg.includes('plan')) {
+                response = `Premium: 399 kr/mån (obegränsat), Konsultpaket: anpassad kostnad efter behov. <a href="/pricing" target="_blank">Se alla priser här</a> 💰`;
+            } else if (msg.includes('teknisk') || msg.includes('support')) {
+                response = `För teknisk support, skicka email till <a href="mailto:benjamin.neilan16@gmail.com">benjamin.neilan16@gmail.com</a>. Vi svarar inom 24h! 🛠️`;
+            } else if (msg.includes('video') || msg.includes('guide')) {
+                response = `Vår steg-för-steg guide visar hur du förbereder CSV-filer för bästa resultat. <a href="/upload" target="_blank">Se guiden här</a> 📚`;
+            } else {
+                response = `Tack för ditt meddelande! För detaljerad hjälp, kontakta oss på <a href="mailto:benjamin.neilan16@gmail.com">benjamin.neilan16@gmail.com</a> så hjälper vi dig inom 24 timmar. 😊`;
+            }
+            
+            addMessage(response, 'bot');
+        }
+        
+        function handleChatKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+        
+        // Show chat notification for new users
+        setTimeout(() => {
+            if (!chatOpen) {
+                document.getElementById('chatBadge').style.display = 'flex';
+            }
+        }, 3000);
+    </script>
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
+        
+        // Track CTA clicks
+        function trackCTA(action, label) {
+            gtag('event', 'cta_click', {
+                'event_category': 'engagement',
+                'event_label': label,
+                'value': action
+            });
+        }
+    </script>
+    
+    {% block scripts %}{% endblock %}
+
+    <!-- Live Chat Widget -->
+    <div id="livechat-widget" class="live-chat-widget">
+        <div id="chat-toggle" class="chat-toggle" onclick="toggleChat()">
+            <i class="fas fa-comments"></i>
+            <span class="chat-badge" id="chatBadge" style="display: none;">1</span>
+        </div>
+        
+        <div id="chat-window" class="chat-window" style="display: none;">
+            <div class="chat-header">
+                <div class="chat-title">
+                    <i class="fas fa-headset me-2"></i>
+                    Live Support
+                </div>
+                <button class="chat-close" onclick="toggleChat()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="chat-body" id="chatMessages">
+                <div class="chat-message bot-message">
+                    <div class="message-content">
+                        <strong>NeilanX Support</strong><br>
+                        Hej! 👋 Hur kan vi hjälpa dig idag?
+                        <div class="quick-options mt-2">
+                            <button class="btn btn-sm btn-outline-primary" onclick="sendQuickMessage('Jag behöver hjälp med CSV-upload')">CSV-hjälp</button>
+                            <button class="btn btn-sm btn-outline-primary" onclick="sendQuickMessage('Frågor om priser och planer')">Priser</button>
+                            <button class="btn btn-sm btn-outline-primary" onclick="sendQuickMessage('Teknisk support')">Support</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-footer">
+                <div class="input-group">
+                    <input type="text" id="chatInput" class="form-control" placeholder="Skriv ditt meddelande..." onkeypress="handleChatKeyPress(event)">
+                    <button class="btn btn-primary" onclick="sendChatMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Include onboarding controller -->
+    <script src="{{ url_for('static', filename='js/onboarding.js') }}"></script>
+</body>
+</html>

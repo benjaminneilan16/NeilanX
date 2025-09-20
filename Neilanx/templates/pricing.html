@@ -1,0 +1,384 @@
+{% extends "base.html" %}
+
+{% block title %}Priser - NeilanX{% endblock %}
+
+{% block content %}
+<!-- Pricing Header -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold mb-3">Enkla och tydliga priser</h1>
+                <p class="lead text-muted">Börja gratis och uppgradera när du behöver mer</p>
+            </div>
+        </div>
+        
+        <!-- Pricing Transparency Alert -->
+        <div class="row mt-4">
+            <div class="col-lg-8 mx-auto">
+                <div class="alert alert-info border-0 shadow-sm">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h6 class="alert-heading mb-1"><i class="fas fa-info-circle me-2"></i>Transparent prissättning</h6>
+                            <p class="mb-0">Efter 100 recensioner: <strong>399 kr/månad för obegränsat</strong>. Inga dolda avgifter eller bindningstid.</p>
+                        </div>
+                        <div class="col-md-4 text-md-end mt-2 mt-md-0">
+                            <small class="text-muted">Byt plan när som helst</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Pricing Cards -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4 justify-content-center">
+            <!-- Free Plan -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4 text-center">
+                        <h5 class="card-title">Gratis</h5>
+                        <div class="display-4 fw-bold text-primary mb-3">0 kr</div>
+                        <p class="text-muted mb-4">Per månad</p>
+                        
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Upp till 100 recensioner/månad
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Grundläggande sentimentanalys
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                CSV-uppladdning
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                PDF-rapporter
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Dashboard
+                            </li>
+                        </ul>
+                        
+                        {% if not session.user_id %}
+                            <a href="{{ url_for('register') }}" class="btn btn-outline-primary w-100">Kom igång gratis</a>
+                        {% else %}
+                            <button class="btn btn-outline-primary w-100" disabled>Aktuell plan</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Premium Plan -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card border-primary shadow h-100 position-relative">
+                    <div class="position-absolute top-0 start-50 translate-middle">
+                        <span class="badge bg-primary px-3 py-2">Populär</span>
+                    </div>
+                    <div class="card-body p-4 text-center">
+                        <h5 class="card-title">Premium</h5>
+                        <div class="display-4 fw-bold text-primary mb-3">399 kr</div>
+                        <p class="text-muted mb-4">Per månad</p>
+                        
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Obegränsat antal recensioner
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Avancerad sentimentanalys
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Avancerad nyckelordsanalys
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Automatiska veckorapporter
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Prioriterad support
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Anpassade rapporter
+                            </li>
+                        </ul>
+                        
+                        <a href="#" class="btn btn-primary w-100">Uppgradera nu</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enterprise Plan -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4 text-center">
+                        <h5 class="card-title">Konsultpaket</h5>
+                        <div class="display-4 fw-bold text-primary mb-3">Anpassad</div>
+                        <p class="text-muted mb-4">Kostnad efter behov</p>
+                        
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Anpassad lösning för ert företag
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Personlig genomgång av resultat
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Skräddarsydda rapporter
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Strategirekommendationer
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Uppföljning och coaching
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Prioriterad e-post support
+                            </li>
+                        </ul>
+                        
+                        <a href="#contact" class="btn btn-outline-primary w-100">Kontakta oss</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Feature Comparison -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <h2 class="text-center mb-5">Jämförelse av funktioner</h2>
+                
+                <div class="table-responsive">
+                    <table class="table table-bordered bg-white">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 40%;">Funktion</th>
+                                <th class="text-center">Gratis</th>
+                                <th class="text-center">Premium</th>
+                                <th class="text-center">Enterprise</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Recensioner per månad</td>
+                                <td class="text-center">100</td>
+                                <td class="text-center">Obegränsat</td>
+                                <td class="text-center">Obegränsat</td>
+                            </tr>
+                            <tr>
+                                <td>Sentimentanalys</td>
+                                <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                            </tr>
+                            <tr>
+                                <td>CSV-uppladdning</td>
+                                <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                            </tr>
+                            <tr>
+                                <td>PDF-rapporter</td>
+                                <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                            </tr>
+                            <tr>
+                                <td>Avancerad nyckelordsanalys</td>
+                                <td class="text-center"><i class="fas fa-times text-danger"></i></td>
+                                <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                            </tr>
+                            <tr>
+                                <td>Automatiska rapporter</td>
+                                <td class="text-center"><i class="fas fa-times text-danger"></i></td>
+                                <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                            </tr>
+                            <tr>
+                                <td>Prioriterad support</td>
+                                <td class="text-center"><i class="fas fa-times text-danger"></i></td>
+                                <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                            </tr>
+                            <tr>
+                                <td>Anpassad utveckling</td>
+                                <td class="text-center"><i class="fas fa-times text-danger"></i></td>
+                                <td class="text-center"><i class="fas fa-times text-danger"></i></td>
+                                <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="text-center mb-5">Vanliga frågor</h2>
+                
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading1">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="true" aria-controls="faq1">
+                                Hur fungerar den gratis planen?
+                            </button>
+                        </h2>
+                        <div id="faq1" class="accordion-collapse collapse show" aria-labelledby="heading1" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Den gratis planen låter dig analysera upp till 100 recensioner per månad. Du får tillgång till alla grundläggande funktioner inklusive sentimentanalys, dashboard och PDF-rapporter.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading2">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">
+                                Kan jag byta plan när som helst?
+                            </button>
+                        </h2>
+                        <div id="faq2" class="accordion-collapse collapse" aria-labelledby="heading2" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Ja, du kan uppgradera eller nedgradera din plan när som helst. Ändringar träder i kraft vid nästa faktureringsperiod.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading3">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">
+                                Vilka filformat stöds?
+                            </button>
+                        </h2>
+                        <div id="faq3" class="accordion-collapse collapse" aria-labelledby="heading3" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Vi stöder CSV-filer, text-inmatning direkt i webbläsaren, och OCR-analys av skärmdumpar. Alla format är optimerade för svenska texter.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading4">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" aria-expanded="false" aria-controls="faq4">
+                                Hur exakt är sentimentanalysen?
+                            </button>
+                        </h2>
+                        <div id="faq4" class="accordion-collapse collapse" aria-labelledby="heading4" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Vår AI är specialtränad på svenska texter och uppnår över 90% noggrannhet på svenska recensioner. Vi använder avancerade språkmodeller som är optimerade för nordiska språk.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading5">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5" aria-expanded="false" aria-controls="faq5">
+                                Skickas rapporter automatiskt till min e-post?
+                            </button>
+                        </h2>
+                        <div id="faq5" class="accordion-collapse collapse" aria-labelledby="heading5" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Ja! Premium och Konsultpaket-användare får automatiska e-postnotifikationer när nya rapporter genereras. E-posten innehåller en säker nedladdningslänk och sammanfattning av resultat. Gratis användare kan ladda ner rapporter direkt från dashboard.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h2 class="mb-3">Har du frågor?</h2>
+        <p class="lead mb-4">Kontakta oss för en demo eller frågor om konsultpaket</p>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <a href="mailto:benjamin.neilan16@gmail.com" class="btn btn-light btn-lg me-3">
+                    <i class="fas fa-envelope me-2"></i>benjamin.neilan16@gmail.com
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<!-- Login/Register Forms -->
+<div class="modal fade" id="loginModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Logga in</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ url_for('login') }}" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">E-post</label>
+                        <input type="email" class="form-control" name="email" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Avbryt</button>
+                    <button type="submit" class="btn btn-primary">Logga in</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="registerModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Skapa konto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ url_for('register') }}" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">E-post</label>
+                        <input type="email" class="form-control" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="company_name" class="form-label">Företagsnamn</label>
+                        <input type="text" class="form-control" name="company_name" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Avbryt</button>
+                    <button type="submit" class="btn btn-primary">Skapa konto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,431 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section py-5">
+    <div class="container">
+        <div class="row align-items-center min-vh-75">
+            <div class="col-lg-6">
+                <div class="badge bg-success-soft text-success mb-3 px-3 py-2">
+                    <i class="fas fa-sparkles me-1"></i>100% Svensk AI-teknik
+                </div>
+                <h1 class="display-4 fw-bold mb-4">NeilanX – AI som förstår dina kundrecensioner</h1>
+                <p class="lead mb-4 text-muted">Analysera kundrecensioner med svenska AI-modeller. Få insikter på sekunder med vår avancerade sentimentanalys.</p>
+                <div class="d-flex flex-wrap gap-3 mb-4">
+                    {% if not session.user_id %}
+                        <a href="{{ url_for('register') }}" class="btn btn-success btn-lg cta-button" onclick="trackCTA('hero_signup', 'hero_button')">
+                            <i class="fas fa-chart-line me-2"></i>Testa gratis analys
+                        </a>
+                        <a href="{{ url_for('pricing') }}" class="btn btn-outline-primary btn-lg">Se hur det funkar</a>
+                    {% else %}
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-success btn-lg">Gå till Dashboard</a>
+                        <a href="{{ url_for('upload_reviews') }}" class="btn btn-outline-primary btn-lg">Ladda upp recensioner</a>
+                    {% endif %}
+                </div>
+                <div class="d-flex align-items-center text-muted small">
+                    <i class="fas fa-check-circle text-success me-2"></i>
+                    <span class="me-4">Inga dolda avgifter</span>
+                    <i class="fas fa-check-circle text-success me-2"></i>
+                    <span class="me-4">100 recensioner gratis</span>
+                    <i class="fas fa-check-circle text-success me-2"></i>
+                    <span>Klar på 30 sekunder</span>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="hero-image-container position-relative">
+                    <div class="hero-illustration">
+                        <div class="dashboard-mockup bg-white rounded-3 shadow-lg p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="d-flex gap-1">
+                                    <div class="bg-danger rounded-circle" style="width: 8px; height: 8px;"></div>
+                                    <div class="bg-warning rounded-circle" style="width: 8px; height: 8px;"></div>
+                                    <div class="bg-success rounded-circle" style="width: 8px; height: 8px;"></div>
+                                </div>
+                                <small class="text-muted">NeilanX Dashboard</small>
+                            </div>
+                            <div class="row g-2 mb-3">
+                                <div class="col-4">
+                                    <div class="card border-0 bg-success-soft text-center py-2">
+                                        <div class="h6 mb-0 text-success">89%</div>
+                                        <small class="text-success">Positiv</small>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="card border-0 bg-warning-soft text-center py-2">
+                                        <div class="h6 mb-0 text-warning">8%</div>
+                                        <small class="text-warning">Neutral</small>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="card border-0 bg-danger-soft text-center py-2">
+                                        <div class="h6 mb-0 text-danger">3%</div>
+                                        <small class="text-danger">Negativ</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-chart-line text-primary me-2"></i>
+                                    <span class="small text-muted">+23% denna vecka</span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-star text-warning me-1"></i>
+                                    <span class="small">4.8/5.0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="floating-stats">
+                        <div class="stat-bubble stat-1">
+                            <i class="fas fa-heart text-danger"></i>
+                            <span>+150 reviews</span>
+                        </div>
+                        <div class="stat-bubble stat-2">
+                            <i class="fas fa-trending-up text-success"></i>
+                            <span>↗ Sentiment</span>
+                        </div>
+                        <div class="stat-bubble stat-3">
+                            <i class="fas fa-clock text-primary"></i>
+                            <span>2.3s analys</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center mb-5">
+                <h2 class="h1 mb-3">Funktioner som gör skillnad</h2>
+                <p class="lead text-muted">Allt du behöver för att förstå dina kunder bättre</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm feature-card">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-brain fa-2x text-primary"></i>
+                        </div>
+                        <h5 class="card-title"><i class="fas fa-heart text-danger me-2"></i>Sentimentanalys</h5>
+                        <p class="card-text text-muted">Se andel positiv/negativ feedback med svenska språkmodeller</p>
+                        <div class="feature-stats">
+                            <small class="text-success"><i class="fas fa-check me-1"></i>92% noggrannhet</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm feature-card">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-chart-line fa-2x text-primary"></i>
+                        </div>
+                        <h5 class="card-title"><i class="fas fa-tachometer-alt text-info me-2"></i>Dashboard</h5>
+                        <p class="card-text text-muted">Tydliga grafer & trender som är lätta att förstå</p>
+                        <div class="feature-stats">
+                            <small class="text-success"><i class="fas fa-clock me-1"></i>Realtidsdata</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm feature-card">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-file-contract fa-2x text-primary"></i>
+                        </div>
+                        <h5 class="card-title"><i class="fas fa-download text-success me-2"></i>PDF-rapporter</h5>
+                        <p class="card-text text-muted">Automatiska veckosammanfattningar du kan dela</p>
+                        <div class="feature-stats">
+                            <small class="text-success"><i class="fas fa-magic me-1"></i>Auto-genererade</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm feature-card">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-cloud-upload-alt fa-2x text-primary"></i>
+                        </div>
+                        <h5 class="card-title"><i class="fas fa-layers text-warning me-2"></i>Flexibel inmatning</h5>
+                        <p class="card-text text-muted">CSV-filer, skärmdumpar och kopiera/klistra text</p>
+                        <div class="feature-stats">
+                            <small class="text-success"><i class="fas fa-image me-1"></i>OCR-support</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- CTA after features -->
+        <div class="row mt-5">
+            <div class="col-lg-8 mx-auto text-center">
+                <div class="cta-banner bg-gradient-primary text-white rounded-3 p-4">
+                    <h4 class="mb-3">Redo att testa? Kom igång på 30 sekunder!</h4>
+                    <div class="d-flex justify-content-center gap-3">
+                        {% if not session.user_id %}
+                            <a href="{{ url_for('register') }}" class="btn btn-success btn-lg cta-button" onclick="trackCTA('features_signup', 'features_cta')">
+                                <i class="fas fa-play-circle me-2"></i>Boka gratis demo
+                            </a>
+                            <a href="{{ url_for('pricing') }}" class="btn btn-light btn-lg">Se alla funktioner</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Visual Examples Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center mb-5">
+                <h2 class="h1 mb-3">Se skillnaden själv</h2>
+                <p class="lead text-muted">Från kaos till klarhet – så transformerar NeilanX din kunddata</p>
+            </div>
+        </div>
+        
+        <div class="row align-items-center mb-5">
+            <div class="col-lg-10 mx-auto">
+                <div class="card border-0 shadow-lg">
+                    <div class="card-body p-4">
+                        <img src="{{ url_for('static', filename='images/Before_after_review_analysis_e07d34a0_optimized.jpg') }}" 
+                             alt="Före och efter jämförelse av recensionsanalys" 
+                             class="img-fluid rounded"
+                             loading="lazy">
+                    </div>
+                </div>
+                <div class="text-center mt-3">
+                    <small class="text-muted"><strong>FÖRE:</strong> Timmar av manuell sortering &nbsp;|&nbsp; <strong>EFTER:</strong> Automatisk analys på sekunder</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-transparent border-0 pb-0">
+                        <h5 class="card-title text-center">
+                            <i class="fas fa-chart-pie text-primary me-2"></i>Professionell Dashboard
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <img src="{{ url_for('static', filename='images/Swedish_dashboard_analytics_interface_a1c664ee_optimized.jpg') }}" 
+                             alt="NeilanX dashboard med svenska analytics" 
+                             class="img-fluid rounded mb-3"
+                             loading="lazy">
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Realtidsanalys av sentiment</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Visuella grafer och diagram</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Nyckelord som sticker ut</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Trender över tid</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-transparent border-0 pb-0">
+                        <h5 class="card-title text-center">
+                            <i class="fas fa-file-pdf text-danger me-2"></i>Färdiga PDF-rapporter
+                        </h5>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <div class="text-center mb-4">
+                            <div class="bg-light p-4 rounded border-2 border-dashed" style="min-height: 200px;">
+                                <i class="fas fa-file-pdf fa-4x text-danger mb-3"></i>
+                                <h6>NeilanX Månadsrapport</h6>
+                                <small class="text-muted">Professionella rapporter redo för presentation</small>
+                            </div>
+                        </div>
+                        <ul class="list-unstyled flex-grow-1">
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Sammanfattning av insights</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Färdiga grafer och tabeller</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Rekommendationer för förbättring</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Delning med teamet</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- How It Works Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center mb-5">
+                <h2 class="h1 mb-3">Så funkar det</h2>
+                <p class="lead text-muted">Tre enkla steg till djupare kundinsikter</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4 text-center">
+                <div class="step-number mb-3">1</div>
+                <h4>Ladda upp dina recensioner</h4>
+                <p class="text-muted">CSV-filer, skärmdumpar eller klistra in text direkt</p>
+            </div>
+            
+            <div class="col-md-4 text-center">
+                <div class="step-number mb-3">2</div>
+                <h4>AI analyserar teman & känslor</h4>
+                <p class="text-muted">Vår svenska AI förstår sentiment och extraherar viktiga nyckelord</p>
+            </div>
+            
+            <div class="col-md-4 text-center">
+                <div class="step-number mb-3">3</div>
+                <h4>Du får en tydlig rapport</h4>
+                <p class="text-muted">Dashboard med grafer och PDF-rapporter redo att delas</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Trust & Security Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center mb-5">
+                <h2 class="h1 mb-3">Säkerhet & Support</h2>
+                <p class="lead text-muted">Vi värnar om din data och är här för att hjälpa</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-shield-alt fa-3x text-primary"></i>
+                    </div>
+                    <h5>GDPR-kompatibel</h5>
+                    <p class="text-muted">All data lagras säkert i Sverige enligt EU:s dataskyddsförordning. Vi delar aldrig din data med tredje part.</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-server fa-3x text-primary"></i>
+                    </div>
+                    <h5>Lokal databehandling</h5>
+                    <p class="text-muted">All AI-analys sker lokalt på våra servrar. Inga externa API:er - din data lämnar aldrig vårt system.</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-headset fa-3x text-primary"></i>
+                    </div>
+                    <h5>Svensk support</h5>
+                    <p class="text-muted">E-post support på svenska. Premium-kunder får svar inom 2 timmar under kontorstid.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-5">
+            <div class="col-lg-6 mx-auto text-center">
+                <div class="card border-primary">
+                    <div class="card-body p-4">
+                        <h5 class="text-primary mb-3">Supportalternativ</h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-envelope text-primary me-2"></i>
+                                    <div class="text-start">
+                                        <small class="text-muted">E-post</small><br>
+                                        <strong>benjamin.neilan16@gmail.com</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-comments text-primary me-2"></i>
+                                    <div class="text-start">
+                                        <small class="text-muted">Live chat</small><br>
+                                        <strong>Premium kunder</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Email Signup Section -->
+<section class="py-5 bg-gradient-primary text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="h1 mb-3">Redo att förstå dina kunder bättre?</h2>
+                <p class="lead mb-4">Börja med 100 recensioner gratis. Enkelt att komma igång.</p>
+                
+                {% if not session.user_id %}
+                    <!-- Direct Signup Form -->
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <form id="quickSignupForm" class="quick-signup-form" action="{{ url_for('register') }}" method="POST">
+                                <div class="input-group input-group-lg mb-3">
+                                    <input type="email" class="form-control" name="email" placeholder="Din e-postadress..." required>
+                                    <input type="text" class="form-control" name="company_name" placeholder="Företagsnamn..." required>
+                                    <button type="submit" class="btn btn-success btn-lg cta-button" onclick="trackCTA('email_signup', 'bottom_form')">
+                                        <i class="fas fa-chart-bar me-1"></i>Starta analys gratis
+                                    </button>
+                                </div>
+                                <small class="text-white-50">
+                                    <i class="fas fa-shield-alt me-1"></i>Vi skickar aldrig spam. Avregistrera när som helst.
+                                </small>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <p class="mb-3"><strong>Eller välj hur du vill komma igång:</strong></p>
+                            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                                <a href="{{ url_for('register') }}" class="btn btn-light btn-lg">
+                                    <i class="fas fa-user-plus me-2"></i>Fullständig registrering
+                                </a>
+                                <a href="{{ url_for('pricing') }}" class="btn btn-outline-light btn-lg">
+                                    <i class="fas fa-eye me-2"></i>Se alla priser
+                                </a>
+                                <a href="{{ url_for('contact') }}" class="btn btn-outline-light btn-lg">
+                                    <i class="fas fa-comments me-2"></i>Boka demo
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="{{ url_for('upload_reviews') }}" class="btn btn-success btn-lg">
+                            <i class="fas fa-upload me-2"></i>Ladda upp recensioner
+                        </a>
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-light btn-lg">
+                            <i class="fas fa-chart-line me-2"></i>Visa Dashboard
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

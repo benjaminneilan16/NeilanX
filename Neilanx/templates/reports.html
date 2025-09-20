@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %}Rapporter - NeilanX{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-lg-8">
+            <h1 class="h2 mb-1">Rapporter</h1>
+            <p class="text-muted">Generera och ladda ner PDF-rapporter från dina recensionsanalyser</p>
+        </div>
+    </div>
+
+    <!-- Generate New Report -->
+    {% if uploads %}
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-light">
+            <h5 class="card-title mb-0">
+                <i class="fas fa-plus-circle me-2"></i>Generera ny rapport
+            </h5>
+        </div>
+        <div class="card-body">
+            <p class="text-muted mb-3">Välj en uppladdning för att generera en detaljerad PDF-rapport.</p>
+            <div class="row g-3">
+                {% for upload in uploads %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card border">
+                        <div class="card-body">
+                            <h6 class="card-title">{{ upload.filename }}</h6>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <small class="text-muted">{{ upload.processed_reviews }} recensioner</small>
+                                <span class="badge bg-success">{{ upload.status }}</span>
+                            </div>
+                            <small class="text-muted d-block mb-3">{{ upload.upload_date|date }}</small>
+                            <a href="{{ url_for('generate_report', upload_id=upload.id) }}" 
+                               class="btn btn-primary btn-sm w-100">
+                                <i class="fas fa-file-pdf me-1"></i>Generera rapport
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Existing Reports -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0">
+                <i class="fas fa-file-alt me-2"></i>Genererade rapporter
+            </h5>
+            <span class="badge bg-secondary">{{ reports|length }} rapporter</span>
+        </div>
+        <div class="card-body">
+            {% if reports %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Rapportnamn</th>
+                                <th>Baserad på</th>
+                                <th>Genererad</th>
+                                <th>Åtgärder</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for report in reports %}
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-file-pdf text-danger me-2"></i>
+                                        <div>
+                                            <div class="fw-medium">{{ report.filename }}</div>
+                                            <small class="text-muted">{{ report.report_type.title() }} rapport</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    {% set upload = report.upload %}
+                                    <div>
+                                        <div class="fw-medium">{{ upload.filename }}</div>
+                                        <small class="text-muted">{{ upload.processed_reviews }} recensioner</small>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="text-muted">{{ report.generated_at|datetime }}</span>
+                                </td>
+                                <td>
+                                    <a href="{{ url_for('download_report', report_id=report.id) }}" 
+                                       class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-download me-1"></i>Ladda ner
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-file-alt fa-4x text-muted mb-3"></i>
+                    <h5 class="text-muted">Inga rapporter genererade än</h5>
+                    <p class="text-muted mb-4">Generera din första rapport från en av dina recensionsuppladdningar.</p>
+                    {% if not uploads %}
+                        <a href="{{ url_for('upload_reviews') }}" class="btn btn-primary">
+                            <i class="fas fa-upload me-2"></i>Ladda upp recensioner först
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Report Features -->
+    <div class="row mt-4">
+        <div class="col-lg-8 mx-auto">
+            <div class="card border-0 bg-light">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Vad ingår i rapporterna?</h5>
+                    <div class="row g-3 mt-3">
+                        <div class="col-md-3">
+                            <i class="fas fa-chart-pie fa-2x text-primary mb-2"></i>
+                            <div class="small">Sentimentfördelning</div>
+                        </div>
+                        <div class="col-md-3">
+                            <i class="fas fa-tags fa-2x text-primary mb-2"></i>
+                            <div class="small">Nyckelord</div>
+                        </div>
+                        <div class="col-md-3">
+                            <i class="fas fa-quotes-left fa-2x text-primary mb-2"></i>
+                            <div class="small">Exempelrecensioner</div>
+                        </div>
+                        <div class="col-md-3">
+                            <i class="fas fa-lightbulb fa-2x text-primary mb-2"></i>
+                            <div class="small">Rekommendationer</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

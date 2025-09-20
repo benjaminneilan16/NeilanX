@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+
+{% block title %}Kontakt - NeilanX{% endblock %}
+
+{% block content %}
+<!-- Contact Header -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold mb-3">Kontakta oss</h1>
+                <p class="lead text-muted">Vi hjälper dig gärna med frågor om NeilanX</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Information -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-envelope fa-3x text-primary"></i>
+                        </div>
+                        <h5>E-post support</h5>
+                        <p class="text-muted">Allmänna frågor och support</p>
+                        <a href="mailto:benjamin.neilan16@gmail.com" class="btn btn-outline-primary">benjamin.neilan16@gmail.com</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-handshake fa-3x text-primary"></i>
+                        </div>
+                        <h5>Försäljning</h5>
+                        <p class="text-muted">Demo och Enterprise-lösningar</p>
+                        <a href="mailto:benjamin.neilan16@gmail.com" class="btn btn-outline-primary">benjamin.neilan16@gmail.com</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-comments fa-3x text-primary"></i>
+                        </div>
+                        <h5>Live chat</h5>
+                        <p class="text-muted">Premium och Enterprise kunder</p>
+                        <button class="btn btn-outline-primary" onclick="startLiveChat()">Starta chat</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Form -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card border-0 shadow">
+                    <div class="card-body p-5">
+                        <h3 class="text-center mb-4">Skicka ett meddelande</h3>
+                        
+                        {% if message_sent %}
+                            <div class="alert alert-success">
+                                <i class="fas fa-check-circle me-2"></i>
+                                Tack för ditt meddelande! Vi återkommer inom 24 timmar.
+                            </div>
+                        {% endif %}
+                        
+                        <form method="POST">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="name" class="form-label">Namn *</label>
+                                    <input type="text" class="form-control" name="name" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label">E-post *</label>
+                                    <input type="email" class="form-control" name="email" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="company" class="form-label">Företag</label>
+                                    <input type="text" class="form-control" name="company">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="subject" class="form-label">Ämne *</label>
+                                    <select class="form-select" name="subject" required>
+                                        <option value="">Välj ämne...</option>
+                                        <option value="support">Teknisk support</option>
+                                        <option value="sales">Försäljningsfråga</option>
+                                        <option value="demo">Begär demo</option>
+                                        <option value="enterprise">Enterprise-lösning</option>
+                                        <option value="other">Övrigt</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label for="message" class="form-label">Meddelande *</label>
+                                    <textarea class="form-control" name="message" rows="5" required 
+                                             placeholder="Berätta mer om hur vi kan hjälpa dig..."></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="newsletter" id="newsletter">
+                                        <label class="form-check-label" for="newsletter">
+                                            Jag vill ta emot uppdateringar om NeilanX via e-post
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-center">
+                                    <button type="submit" class="btn btn-primary btn-lg px-5">
+                                        <i class="fas fa-paper-plane me-2"></i>Skicka meddelande
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Support Response Times -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h3 class="mb-4">Våra svarstider</h3>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="border-start border-primary border-4 ps-3">
+                            <h5 class="text-primary mb-1">Gratis plan</h5>
+                            <p class="text-muted mb-0">Inom 48 timmar</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="border-start border-success border-4 ps-3">
+                            <h5 class="text-success mb-1">Premium</h5>
+                            <p class="text-muted mb-0">Inom 24 timmar (kontorstid)</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="border-start border-warning border-4 ps-3">
+                            <h5 class="text-warning mb-1">Enterprise</h5>
+                            <p class="text-muted mb-0">Inom 4 timmar (vardagar)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-5">
+            <div class="col-lg-6 mx-auto text-center">
+                <h4 class="mb-3">Vanliga frågor först?</h4>
+                <p class="text-muted mb-4">Kanske hittar du svaret snabbare i vår FAQ</p>
+                <a href="{{ url_for('pricing') }}#faq" class="btn btn-outline-primary">Se vanliga frågor</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Office Information -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h3 class="mb-3">NeilanX Sverige</h3>
+                <p class="lead mb-4">Utvecklat av svenska utvecklare för svenska företag</p>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <i class="fas fa-map-marker-alt fa-2x me-3"></i>
+                            <div class="text-start">
+                                <h6 class="mb-0">Huvudkontor</h6>
+                                <small>Malmö, Sverige</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <i class="fas fa-clock fa-2x me-3"></i>
+                            <div class="text-start">
+                                <h6 class="mb-0">Support</h6>
+                                <small>Måndag-Fredag 08:00-17:00</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function startLiveChat() {
+    // Placeholder for live chat integration
+    alert('Live chat är tillgänglig för Premium och Enterprise kunder. Kontakta oss via e-post för att uppgradera!');
+}
+</script>
+{% endblock %}

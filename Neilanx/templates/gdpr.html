@@ -1,0 +1,407 @@
+{% extends "base.html" %}
+
+{% block title %}GDPR Information - NeilanX{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Header -->
+            <div class="text-center mb-5">
+                <h1 class="h2 mb-3">GDPR Information</h1>
+                <p class="text-muted">Hur NeilanX följer Dataskyddsförordningen (GDPR)</p>
+                <div class="alert alert-success">
+                    <i class="fas fa-shield-check me-2"></i>
+                    <strong>Full GDPR-efterlevnad.</strong> Vi följer alla krav i EU:s dataskyddsförordning.
+                </div>
+            </div>
+
+            <!-- Quick Overview -->
+            <div class="row g-4 mb-5">
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm text-center h-100">
+                        <div class="card-body">
+                            <i class="fas fa-server fa-2x text-primary mb-3"></i>
+                            <h6>Data inom EU</h6>
+                            <p class="small text-muted">All data lagras på svenska servrar</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm text-center h-100">
+                        <div class="card-body">
+                            <i class="fas fa-user-check fa-2x text-success mb-3"></i>
+                            <h6>Dina rättigheter</h6>
+                            <p class="small text-muted">Full kontroll över din data</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm text-center h-100">
+                        <div class="card-body">
+                            <i class="fas fa-lock fa-2x text-info mb-3"></i>
+                            <h6>Säker hantering</h6>
+                            <p class="small text-muted">Kryptering och säkerhetsåtgärder</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm text-center h-100">
+                        <div class="card-body">
+                            <i class="fas fa-clock fa-2x text-warning mb-3"></i>
+                            <h6>Snabb respons</h6>
+                            <p class="small text-muted">Svar inom 30 dagar på förfrågningar</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Legal Basis -->
+            <section class="mb-5">
+                <h3 class="h4 mb-3">Rättslig grund för behandling</h3>
+                
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Datatyp</th>
+                                <th>Rättslig grund</th>
+                                <th>Syfte</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Kontoinformation</strong></td>
+                                <td>Avtal (Art. 6.1.b)</td>
+                                <td>Leverera tjänsten du registrerat dig för</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Recensionsdata</strong></td>
+                                <td>Avtal (Art. 6.1.b)</td>
+                                <td>Utföra AI-analys enligt ditt uppdrag</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Användningsstatistik</strong></td>
+                                <td>Berättigat intresse (Art. 6.1.f)</td>
+                                <td>Förbättra och utveckla tjänsten</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Marknadsföring</strong></td>
+                                <td>Samtycke (Art. 6.1.a)</td>
+                                <td>Skicka nyhetsbrev (endast om du valt det)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Your Rights -->
+            <section class="mb-5">
+                <h3 class="h4 mb-3">Dina GDPR-rättigheter</h3>
+                
+                <div class="accordion" id="rightsAccordion">
+                    
+                    <!-- Right to Information -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#right1">
+                                <i class="fas fa-info-circle text-primary me-3"></i>
+                                Rätt till information (Art. 13-14)
+                            </button>
+                        </h2>
+                        <div id="right1" class="accordion-collapse collapse show" data-bs-parent="#rightsAccordion">
+                            <div class="accordion-body">
+                                <p><strong>Du har rätt att veta:</strong></p>
+                                <ul>
+                                    <li>Vilka personuppgifter vi samlar in</li>
+                                    <li>Varför vi behandlar dem</li>
+                                    <li>Hur länge vi sparar dem</li>
+                                    <li>Vilka som kan få tillgång till dem</li>
+                                </ul>
+                                <div class="alert alert-info">
+                                    <i class="fas fa-check me-2"></i>
+                                    <strong>Status:</strong> All information finns i vår <a href="{{ url_for('privacy_policy') }}" class="alert-link">integritetspolicy</a>.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right of Access -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#right2">
+                                <i class="fas fa-eye text-success me-3"></i>
+                                Rätt till tillgång (Art. 15)
+                            </button>
+                        </h2>
+                        <div id="right2" class="accordion-collapse collapse" data-bs-parent="#rightsAccordion">
+                            <div class="accordion-body">
+                                <p><strong>Du kan begära:</strong></p>
+                                <ul>
+                                    <li>En kopia av alla personuppgifter vi har om dig</li>
+                                    <li>Information om hur vi använder dina data</li>
+                                    <li>Vilka som fått tillgång till dina data</li>
+                                </ul>
+                                <div class="d-flex gap-2 mt-3">
+                                    <a href="mailto:benjamin.neilan16@gmail.com?subject=GDPR%20-%20Begäran%20om%20tillgång%20till%20data" class="btn btn-success btn-sm">
+                                        <i class="fas fa-envelope me-1"></i>Begär datatillgång
+                                    </a>
+                                    <span class="badge bg-info align-self-center">Svar inom 30 dagar</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right to Rectification -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#right3">
+                                <i class="fas fa-edit text-warning me-3"></i>
+                                Rätt till rättelse (Art. 16)
+                            </button>
+                        </h2>
+                        <div id="right3" class="accordion-collapse collapse" data-bs-parent="#rightsAccordion">
+                            <div class="accordion-body">
+                                <p><strong>Du kan begära att vi rättar:</strong></p>
+                                <ul>
+                                    <li>Felaktiga personuppgifter</li>
+                                    <li>Ofullständiga uppgifter</li>
+                                    <li>Inaktuell information</li>
+                                </ul>
+                                <div class="alert alert-success">
+                                    <i class="fas fa-user-cog me-2"></i>
+                                    <strong>Enkelt att ändra:</strong> Du kan uppdatera din profil direkt i ditt konto eller kontakta oss.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right to Erasure -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#right4">
+                                <i class="fas fa-eraser text-danger me-3"></i>
+                                Rätt till radering (Art. 17)
+                            </button>
+                        </h2>
+                        <div id="right4" class="accordion-collapse collapse" data-bs-parent="#rightsAccordion">
+                            <div class="accordion-body">
+                                <p><strong>Du kan begära radering när:</strong></p>
+                                <ul>
+                                    <li>Uppgifterna inte längre behövs</li>
+                                    <li>Du återkallar ditt samtycke</li>
+                                    <li>Uppgifterna behandlats felaktigt</li>
+                                    <li>Du invänder mot behandlingen</li>
+                                </ul>
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    <strong>Obs:</strong> Vi kan behöva behålla vissa data för bokförings- eller juridiska krav.
+                                </div>
+                                <a href="mailto:benjamin.neilan16@gmail.com?subject=GDPR%20-%20Begäran%20om%20radering%20av%20data" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash me-1"></i>Begär radering
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right to Portability -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#right5">
+                                <i class="fas fa-download text-info me-3"></i>
+                                Rätt till dataportabilitet (Art. 20)
+                            </button>
+                        </h2>
+                        <div id="right5" class="accordion-collapse collapse" data-bs-parent="#rightsAccordion">
+                            <div class="accordion-body">
+                                <p><strong>Du kan få dina data i ett portabelt format:</strong></p>
+                                <ul>
+                                    <li>JSON eller CSV-format</li>
+                                    <li>Alla dina recensioner och analyser</li>
+                                    <li>Möjlighet att överföra till annan tjänst</li>
+                                </ul>
+                                <a href="mailto:benjamin.neilan16@gmail.com?subject=GDPR%20-%20Begäran%20om%20dataportabilitet" class="btn btn-info btn-sm">
+                                    <i class="fas fa-download me-1"></i>Begär dataexport
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right to Object -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#right6">
+                                <i class="fas fa-hand-paper text-warning me-3"></i>
+                                Rätt att göra invändningar (Art. 21)
+                            </button>
+                        </h2>
+                        <div id="right6" class="accordion-collapse collapse" data-bs-parent="#rightsAccordion">
+                            <div class="accordion-body">
+                                <p><strong>Du kan invända mot behandling som baseras på:</strong></p>
+                                <ul>
+                                    <li>Berättigade intressen</li>
+                                    <li>Direktmarknadsföring</li>
+                                    <li>Profilering för marknadsföring</li>
+                                </ul>
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    <strong>Enkel avanmälan:</strong> Klicka "avanmäl" i alla våra e-postmeddelanden.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Data Processing Record -->
+            <section class="mb-5">
+                <h3 class="h4 mb-3">Behandlingsförteckning</h3>
+                
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0">NeilanX Behandlingsförteckning enligt Art. 30</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <h6>Personuppgiftsansvarig</h6>
+                                <p><strong>NeilanX</strong><br>
+                                Benjamin Neilan<br>
+                                Malmö, Sverige<br>
+                                benjamin.neilan16@gmail.com</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Dataskyddsombud</h6>
+                                <p>Inte obligatoriskt för småföretag enligt Art. 37, men du kan kontakta oss direkt för alla dataskyddsfrågor.</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Kategorier av registrerade</h6>
+                                <ul>
+                                    <li>Företagskunder</li>
+                                    <li>Enskilda användare</li>
+                                    <li>Webbplatsbesökare</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Mottagare av data</h6>
+                                <ul>
+                                    <li>E-posttjänster (för rapporter)</li>
+                                    <li>Betalningsleverantörer</li>
+                                    <li>IT-leverantörer (systemdrift)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Security Measures -->
+            <section class="mb-5">
+                <h3 class="h4 mb-3">Säkerhetsåtgärder (Art. 32)</h3>
+                
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <h6><i class="fas fa-lock text-primary me-2"></i>Tekniska åtgärder</h6>
+                                <ul class="small">
+                                    <li>HTTPS-kryptering för all kommunikation</li>
+                                    <li>Databasskryptering för känslig data</li>
+                                    <li>Säkra lösenordshash (bcrypt)</li>
+                                    <li>Regelbundna säkerhetsuppdateringar</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <h6><i class="fas fa-users text-success me-2"></i>Organisatoriska åtgärder</h6>
+                                <ul class="small">
+                                    <li>Begränsad tillgång (need-to-know)</li>
+                                    <li>Regelbundna säkerhetskontroller</li>
+                                    <li>Incidenthanteringsprocesser</li>
+                                    <li>Personal utbildning i dataskydd</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Breach Notification -->
+            <section class="mb-5">
+                <h3 class="h4 mb-3">Dataintrång (Art. 33-34)</h3>
+                
+                <div class="alert alert-warning">
+                    <h6><i class="fas fa-exclamation-triangle me-2"></i>Vårt åtagande</h6>
+                    <p>Om ett dataintrång skulle inträffa som riskerar dina rättigheter och friheter, meddelar vi:</p>
+                    <ul class="mb-0">
+                        <li><strong>Tillsynsmyndigheten (IMY)</strong> inom 72 timmar</li>
+                        <li><strong>Dig som användare</strong> utan dröjsmål om det finns hög risk</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Complaints -->
+            <section class="mb-5">
+                <h3 class="h4 mb-3">Klagomål och tillsyn</h3>
+                
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-primary text-white">
+                                <h6 class="mb-0">Kontakta oss först</h6>
+                            </div>
+                            <div class="card-body">
+                                <p>Om du har klagomål om hur vi hanterar dina personuppgifter:</p>
+                                <a href="mailto:benjamin.neilan16@gmail.com?subject=GDPR%20-%20Klagomål" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-envelope me-1"></i>Skicka klagomål
+                                </a>
+                                <p class="small text-muted mt-2">Vi svarar inom 24 timmar</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-warning text-dark">
+                                <h6 class="mb-0">Tillsynsmyndighet</h6>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Integritetsskyddsmyndigheten (IMY)</strong></p>
+                                <p class="small">Box 8114<br>
+                                104 20 Stockholm<br>
+                                <a href="https://www.imy.se" target="_blank" class="text-decoration-none">imy.se</a></p>
+                                <p class="small text-muted">Du har alltid rätt att anmäla till IMY</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Action buttons -->
+            <div class="text-center">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <a href="mailto:benjamin.neilan16@gmail.com?subject=GDPR%20-%20Begäran%20om%20information" class="btn btn-outline-primary w-100">
+                            <i class="fas fa-info-circle me-2"></i>Fråga om dina data
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="mailto:benjamin.neilan16@gmail.com?subject=GDPR%20-%20Begäran%20om%20radering" class="btn btn-outline-danger w-100">
+                            <i class="fas fa-trash me-2"></i>Radera mina data
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="mailto:benjamin.neilan16@gmail.com?subject=GDPR%20-%20Dataexport" class="btn btn-outline-success w-100">
+                            <i class="fas fa-download me-2"></i>Exportera data
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

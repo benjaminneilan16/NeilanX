@@ -1,0 +1,212 @@
+{% extends "base.html" %}
+
+{% block title %}FAQ - Vanliga frågor - NeilanX{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Header -->
+            <div class="text-center mb-5">
+                <h1 class="h2 mb-3">Vanliga frågor</h1>
+                <p class="lead text-muted">Här hittar du svar på de vanligaste frågorna om NeilanX</p>
+            </div>
+
+            <!-- FAQ Accordion -->
+            <div class="accordion" id="faqAccordion">
+                
+                <!-- Question 1 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                            <i class="fas fa-question-circle me-3 text-primary"></i>
+                            Vad är NeilanX och hur fungerar det?
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p>NeilanX är en AI-driven plattform som analyserar kundrecensioner automatiskt. Du laddar upp recensioner via CSV-fil eller klistrar in text, och vår svenska AI ger dig sentiment-analys, nyckelord och detaljerade rapporter på sekunder.</p>
+                            <strong>Så här fungerar det:</strong>
+                            <ol class="mt-2">
+                                <li>Ladda upp recensioner (CSV, text eller bild)</li>
+                                <li>AI analyserar sentiment och extraherar nyckelord</li>
+                                <li>Få interaktiv dashboard med insikter</li>
+                                <li>Generera PDF-rapporter för ditt team</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                            <i class="fas fa-file-csv me-3 text-primary"></i>
+                            Vilka filformat stöds för uppladdning?
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <strong>Stödda format:</strong>
+                            <ul>
+                                <li><strong>CSV-filer:</strong> Rekommenderat format med kolumner: review, rating, källa, name, date</li>
+                                <li><strong>Textinmatning:</strong> Klistra in recensioner direkt i textfältet</li>
+                                <li><strong>Bilder:</strong> OCR-teknologi läser text från skärmdumpar av recensioner</li>
+                            </ul>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-lightbulb me-2"></i>
+                                <strong>Tips:</strong> Använd vår steg-för-steg guide på uppladdningssidan för att förbereda CSV-filer perfekt!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                            <i class="fas fa-crown me-3 text-primary"></i>
+                            Vad är skillnaden mellan Free och Premium?
+                        </button>
+                    </h2>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="border rounded p-3">
+                                        <h6 class="text-success"><i class="fas fa-gift me-2"></i>Free (0 kr)</h6>
+                                        <ul class="list-unstyled">
+                                            <li>✅ 100 recensioner/månad</li>
+                                            <li>✅ Grundläggande sentiment-analys</li>
+                                            <li>✅ Enkel dashboard</li>
+                                            <li>❌ Inga PDF-rapporter</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="border rounded p-3 bg-primary bg-opacity-10">
+                                        <h6 class="text-primary"><i class="fas fa-star me-2"></i>Premium (399 kr/mån)</h6>
+                                        <ul class="list-unstyled">
+                                            <li>✅ Obegränsade recensioner</li>
+                                            <li>✅ Avancerad AI-analys</li>
+                                            <li>✅ Detaljerade PDF-rapporter</li>
+                                            <li>✅ Prioriterad support</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                            <i class="fas fa-shield-alt me-3 text-primary"></i>
+                            Är mina data säkra? Hur hanterar ni GDPR?
+                        </button>
+                    </h2>
+                    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p><strong>Ja, dina data är helt säkra:</strong></p>
+                            <ul>
+                                <li>🔒 <strong>Lokal bearbetning:</strong> All AI-analys sker på våra svenska servrar</li>
+                                <li>🇸🇪 <strong>GDPR-kompatibel:</strong> Följer alla svenska och EU-regler</li>
+                                <li>🗑️ <strong>Automatisk rensning:</strong> Temporära filer raderas efter bearbetning</li>
+                                <li>🚫 <strong>Inga externa API:er:</strong> Din data lämnar aldrig våra servrar</li>
+                                <li>📧 <strong>Endast e-post:</strong> PDF-rapporter skickas via säker e-post</li>
+                            </ul>
+                            <div class="alert alert-success">
+                                <i class="fas fa-check-circle me-2"></i>
+                                <strong>Full transparens:</strong> Läs vår detaljerade <a href="{{ url_for('privacy_policy') }}" class="alert-link">integritetspolicy</a> och <a href="{{ url_for('gdpr') }}" class="alert-link">GDPR-information</a>.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                            <i class="fas fa-headset me-3 text-primary"></i>
+                            Hur får jag teknisk support?
+                        </button>
+                    </h2>
+                    <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p><strong>Vi erbjuder flera sätt att få hjälp:</strong></p>
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <div class="text-center p-3 border rounded">
+                                        <i class="fas fa-comments fa-2x text-primary mb-2"></i>
+                                        <h6>Live Chat</h6>
+                                        <p class="small text-muted">Blå knapp längst ner höger<br>Omedelbar hjälp</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="text-center p-3 border rounded">
+                                        <i class="fas fa-envelope fa-2x text-success mb-2"></i>
+                                        <h6>E-post</h6>
+                                        <p class="small text-muted">benjamin.neilan16@gmail.com<br>Svar inom 24h</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="text-center p-3 border rounded">
+                                        <i class="fas fa-graduation-cap fa-2x text-info mb-2"></i>
+                                        <h6>Självhjälp</h6>
+                                        <p class="small text-muted">Steg-för-steg guider<br>Video tutorials</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 6 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+                            <i class="fas fa-language me-3 text-primary"></i>
+                            Fungerar NeilanX på andra språk än svenska?
+                        </button>
+                    </h2>
+                    <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p><strong>NeilanX är optimerad för svenska recensioner</strong> men fungerar även på andra språk:</p>
+                            <ul>
+                                <li>🇸🇪 <strong>Svenska:</strong> Bästa precision med specialanpassad AI-modell</li>
+                                <li>🇬🇧 <strong>Engelska:</strong> Utmärkt stöd för engelska recensioner</li>
+                                <li>🇳🇴🇩🇰 <strong>Norska/Danska:</strong> Bra resultat tack vare språklikheter</li>
+                                <li>🌍 <strong>Andra språk:</strong> Grundläggande stöd, men svenska ger bäst resultat</li>
+                            </ul>
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <strong>Rekommendation:</strong> För bästa resultat, använd svenska recensioner eller kontakta oss för stöd med andra språk.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Contact CTA -->
+            <div class="text-center mt-5">
+                <div class="bg-light p-4 rounded">
+                    <h5>Hittar du inte svaret du söker?</h5>
+                    <p class="text-muted mb-3">Vår support hjälper dig gärna!</p>
+                    <div class="d-flex gap-3 justify-content-center flex-wrap">
+                        <a href="mailto:benjamin.neilan16@gmail.com" class="btn btn-primary">
+                            <i class="fas fa-envelope me-2"></i>Skicka e-post
+                        </a>
+                        <button class="btn btn-outline-primary" onclick="toggleChat()">
+                            <i class="fas fa-comments me-2"></i>Öppna live chat
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

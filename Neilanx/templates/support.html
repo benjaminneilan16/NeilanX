@@ -1,0 +1,257 @@
+{% extends "base.html" %}
+
+{% block title %}Support & Hjälp - NeilanX{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Header -->
+            <div class="text-center mb-5">
+                <h1 class="h2 mb-3">Support & Hjälp</h1>
+                <p class="lead text-muted">Vi hjälper dig att få ut det mesta av NeilanX</p>
+            </div>
+
+            <!-- Quick Support Options -->
+            <div class="row g-4 mb-5">
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100 text-center">
+                        <div class="card-body p-4">
+                            <i class="fas fa-comments fa-3x text-primary mb-3"></i>
+                            <h5>Live Chat</h5>
+                            <p class="text-muted">Få omedelbar hjälp med vår live chat-support</p>
+                            <button class="btn btn-primary" onclick="toggleChat()">
+                                <i class="fas fa-comment-dots me-2"></i>Starta chat
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100 text-center">
+                        <div class="card-body p-4">
+                            <i class="fas fa-envelope fa-3x text-success mb-3"></i>
+                            <h5>E-post Support</h5>
+                            <p class="text-muted">Skicka detaljerade frågor via e-post</p>
+                            <a href="mailto:benjamin.neilan16@gmail.com" class="btn btn-success">
+                                <i class="fas fa-paper-plane me-2"></i>Skicka e-post
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100 text-center">
+                        <div class="card-body p-4">
+                            <i class="fas fa-question-circle fa-3x text-info mb-3"></i>
+                            <h5>FAQ</h5>
+                            <p class="text-muted">Läs vanliga frågor och svar</p>
+                            <a href="{{ url_for('faq') }}" class="btn btn-info">
+                                <i class="fas fa-list me-2"></i>Se FAQ
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Support Topics -->
+            <div class="row">
+                <div class="col-lg-8">
+                    <h3 class="mb-4">Vanliga supportämnen</h3>
+                    
+                    <!-- CSV Upload Help -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">
+                                <i class="fas fa-file-csv text-primary me-2"></i>
+                                CSV-uppladdning och formatering
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Problem med att ladda upp eller formatera CSV-filer?</p>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <h6><i class="fas fa-check-circle text-success me-2"></i>Så här gör du:</h6>
+                                    <ul class="list-unstyled">
+                                        <li>• Använd kolumnerna: review, rating, källa, name, date</li>
+                                        <li>• Spara som CSV (kommaseparerad)</li>
+                                        <li>• UTF-8 encoding för svenska tecken</li>
+                                        <li>• Max 1000 recensioner per fil</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="{{ url_for('upload_reviews') }}" class="btn btn-outline-primary btn-sm me-2">
+                                        <i class="fas fa-graduation-cap me-1"></i>Se steg-för-steg guide
+                                    </a>
+                                    <a href="#" class="btn btn-outline-success btn-sm" onclick="downloadExampleCSV()">
+                                        <i class="fas fa-download me-1"></i>Ladda ner mall
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Account & Billing -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">
+                                <i class="fas fa-user-cog text-primary me-2"></i>
+                                Konto och fakturering
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Frågor om ditt konto, prenumeration eller betalning?</p>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <h6>Vanliga frågor:</h6>
+                                    <ul>
+                                        <li>Uppgradera till Premium</li>
+                                        <li>Ändra betalningsmetod</li>
+                                        <li>Avsluta prenumeration</li>
+                                        <li>Faktura och kvitton</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        <strong>Kontakta oss direkt</strong> för kontorelaterade frågor via e-post för snabbast service.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Technical Issues -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">
+                                <i class="fas fa-bug text-primary me-2"></i>
+                                Tekniska problem
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Upplever du tekniska problem med plattformen?</p>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <h6>Felsökning först:</h6>
+                                    <ul>
+                                        <li>Uppdatera webbläsaren</li>
+                                        <li>Rensa cache och cookies</li>
+                                        <li>Testa med inkognito-läge</li>
+                                        <li>Kontrollera internetanslutning</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="alert alert-warning">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                        <strong>Rapportera fel:</strong> Inkludera skärmdumpar och beskrivning av problemet när du kontaktar support.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Contact Info Sidebar -->
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-headset me-2"></i>
+                                Kontaktinformation
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <h6><i class="fas fa-envelope text-primary me-2"></i>E-post</h6>
+                                <p class="mb-1">benjamin.neilan16@gmail.com</p>
+                                <small class="text-muted">Svarstid: Inom 24 timmar</small>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h6><i class="fas fa-map-marker-alt text-primary me-2"></i>Plats</h6>
+                                <p class="mb-1">Malmö, Sverige</p>
+                                <small class="text-muted">Svensk företag med lokal support</small>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h6><i class="fas fa-clock text-primary me-2"></i>Supporttider</h6>
+                                <p class="mb-1">Måndag - Fredag</p>
+                                <p class="mb-1">09:00 - 17:00 CET</p>
+                                <small class="text-muted">Live chat: Vardagar</small>
+                            </div>
+
+                            <hr>
+                            
+                            <div class="text-center">
+                                <h6>Snabb hjälp nu</h6>
+                                <button class="btn btn-primary btn-sm w-100 mb-2" onclick="toggleChat()">
+                                    <i class="fas fa-comments me-1"></i>Öppna live chat
+                                </button>
+                                <a href="mailto:benjamin.neilan16@gmail.com" class="btn btn-outline-primary btn-sm w-100">
+                                    <i class="fas fa-envelope me-1"></i>Skicka e-post
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Links -->
+                    <div class="card border-0 shadow-sm mt-4">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0">Snabblänkar</h6>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled mb-0">
+                                <li class="mb-2">
+                                    <a href="{{ url_for('faq') }}" class="text-decoration-none">
+                                        <i class="fas fa-question-circle text-info me-2"></i>FAQ
+                                    </a>
+                                </li>
+                                <li class="mb-2">
+                                    <a href="{{ url_for('upload_reviews') }}" class="text-decoration-none">
+                                        <i class="fas fa-graduation-cap text-success me-2"></i>Steg-för-steg guide
+                                    </a>
+                                </li>
+                                <li class="mb-2">
+                                    <a href="{{ url_for('pricing') }}" class="text-decoration-none">
+                                        <i class="fas fa-crown text-warning me-2"></i>Priser & planer
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ url_for('privacy_policy') }}" class="text-decoration-none">
+                                        <i class="fas fa-shield-alt text-primary me-2"></i>Integritetspolicy
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+// Download example CSV function for support page
+window.downloadExampleCSV = function() {
+    const csvContent = `review,rating,källa,name,date
+"Fantastisk service och snabb leverans!",5,Webbshop,Anna Andersson,2024-01-15
+"Produkten var okej men supporten kunde vara bättre",3,E-post,Erik Nilsson,2024-01-14
+"Mycket nöjd med köpet, rekommenderar starkt",5,Formulär,Maria Johansson,2024-01-13
+"Bra kvalitet och rimligt pris",4,Telefon,Lars Pettersson,2024-01-12
+"Utmärkt kundservice, hjälpsam personal",5,Chat,Ingrid Svensson,2024-01-11`;
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'exempel_recensioner.csv');
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+};
+</script>
+{% endblock %}

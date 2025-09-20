@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - NeilanX{% endblock %}
+
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-lg-8">
+            <h1 class="h2 mb-1">Dashboard</h1>
+            <p class="text-muted">Välkommen tillbaka, {{ user.company_name }}!</p>
+        </div>
+        <div class="col-lg-4 text-lg-end">
+            <a href="{{ url_for('upload_reviews') }}" class="btn btn-primary">
+                <i class="fas fa-upload me-2"></i>Ladda upp recensioner
+            </a>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-file-alt fa-2x text-primary"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <div class="h4 mb-0">{{ uploads|length }}</div>
+                            <div class="text-muted small">Totala uppladdningar</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-smile fa-2x text-success"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <div class="h4 mb-0">{{ sentiment_summary.positive }}</div>
+                            <div class="text-muted small">Positiva recensioner</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-frown fa-2x text-danger"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <div class="h4 mb-0">{{ sentiment_summary.negative }}</div>
+                            <div class="text-muted small">Negativa recensioner</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-meh fa-2x text-warning"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <div class="h4 mb-0">{{ sentiment_summary.neutral }}</div>
+                            <div class="text-muted small">Neutrala recensioner</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Sentiment Chart -->
+        <div class="col-lg-6 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white">
+                    <h5 class="card-title mb-0">Sentimentfördelning</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="sentimentChart" width="400" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Uploads -->
+        <div class="col-lg-6 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">Senaste uppladdningar</h5>
+                    <a href="{{ url_for('upload_reviews') }}" class="btn btn-sm btn-outline-primary">Ladda upp</a>
+                </div>
+                <div class="card-body">
+                    {% if uploads %}
+                        <div class="list-group list-group-flush">
+                            {% for upload in uploads[:5] %}
+                                <div class="list-group-item border-0 px-0">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1">{{ upload.filename }}</h6>
+                                            <p class="mb-1 small text-muted">
+                                                {{ upload.processed_reviews }}/{{ upload.total_reviews }} recensioner
+                                            </p>
+                                            <small class="text-muted">{{ upload.upload_date|datetime }}</small>
+                                        </div>
+                                        <span class="badge bg-{{ 'success' if upload.status == 'completed' else 'warning' if upload.status == 'processing' else 'danger' }}">
+                                            {{ upload.status }}
+                                        </span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-upload fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">Inga uppladdningar än. Kom igång genom att ladda upp dina första recensioner!</p>
+                            <a href="{{ url_for('upload_reviews') }}" class="btn btn-primary">Ladda upp nu</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Reviews -->
+    {% if recent_reviews %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="card-title mb-0">Senaste recensioner</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Recension</th>
+                                    <th>Sentiment</th>
+                                    <th>Betyg</th>
+                                    <th>Plattform</th>
+                                    <th>Datum</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for review in recent_reviews %}
+                                <tr>
+                                    <td>
+                                        <div style="max-width: 300px;">
+                                            {{ review.review_text[:100] }}{% if review.review_text|length > 100 %}...{% endif %}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge" style="background-color: {{ get_sentiment_color(review.sentiment) }}">
+                                            {{ format_sentiment(review.sentiment) }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {% if review.rating %}
+                                            {% for i in range(review.rating) %}
+                                                <i class="fas fa-star text-warning"></i>
+                                            {% endfor %}
+                                            {% for i in range(5 - review.rating) %}
+                                                <i class="far fa-star text-muted"></i>
+                                            {% endfor %}
+                                        {% else %}
+                                            <span class="text-muted">-</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-secondary">{{ review.platform.title() }}</span>
+                                    </td>
+                                    <td>
+                                        <small class="text-muted">
+                                            {% if review.review_date %}
+                                                {{ review.review_date|date }}
+                                            {% else %}
+                                                {{ review.processed_at|date }}
+                                            {% endif %}
+                                        </small>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Sentiment Chart
+    const ctx = document.getElementById('sentimentChart').getContext('2d');
+    
+    const sentimentData = {
+        positive: {{ sentiment_summary.positive }},
+        negative: {{ sentiment_summary.negative }},
+        neutral: {{ sentiment_summary.neutral }}
+    };
+    
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Positiv', 'Negativ', 'Neutral'],
+            datasets: [{
+                data: [sentimentData.positive, sentimentData.negative, sentimentData.neutral],
+                backgroundColor: ['#10B981', '#EF4444', '#F59E0B'],
+                borderWidth: 2,
+                borderColor: '#fff'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 20,
+                        usePointStyle: true
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

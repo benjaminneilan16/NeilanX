@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Sidan hittades inte - NeilanX{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center">
+                <div class="py-5">
+                    <i class="fas fa-search fa-5x text-muted mb-4"></i>
+                    <h1 class="display-4 mb-3">404</h1>
+                    <h2 class="h3 mb-3">Sidan hittades inte</h2>
+                    <p class="lead text-muted mb-4">Tyvärr kunde vi inte hitta sidan du letar efter. Den kan ha flyttats eller tagits bort.</p>
+                    
+                    <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+                        <a href="{{ url_for('index') }}" class="btn btn-primary">
+                            <i class="fas fa-home me-2"></i>Gå till startsidan
+                        </a>
+                        {% if session.user_id %}
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary">
+                                <i class="fas fa-chart-line me-2"></i>Gå till Dashboard
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

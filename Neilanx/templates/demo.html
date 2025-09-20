@@ -1,0 +1,565 @@
+{% extends "base.html" %}
+
+{% block title %}Prova Demo - NeilanX{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Header -->
+            <div class="text-center mb-5">
+                <h1 class="h2 mb-3">🚀 Prova NeilanX Gratis</h1>
+                <p class="lead text-muted">Se hur vår AI analyserar svenska kundrecensioner på sekunder</p>
+                <div class="alert alert-info d-inline-block">
+                    <i class="fas fa-gift me-2"></i>
+                    <strong>Ingen registrering krävs</strong> - testa direkt med våra exempel-recensioner
+                </div>
+            </div>
+
+            <!-- Demo Steps -->
+            <div class="row g-4 mb-5">
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100 text-center">
+                        <div class="card-body p-4">
+                            <div class="bg-primary bg-opacity-10 rounded-circle p-3 d-inline-flex mb-3">
+                                <i class="fas fa-file-upload fa-2x text-primary"></i>
+                            </div>
+                            <h6>1. Välj exempel-data</h6>
+                            <p class="text-muted small">Använd våra svenska e-handelsrecensioner eller ladda upp egna</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100 text-center">
+                        <div class="card-body p-4">
+                            <div class="bg-success bg-opacity-10 rounded-circle p-3 d-inline-flex mb-3">
+                                <i class="fas fa-brain fa-2x text-success"></i>
+                            </div>
+                            <h6>2. AI analyserar</h6>
+                            <p class="text-muted small">Svensk AI utför sentiment-analys och extraherar nyckelord</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100 text-center">
+                        <div class="card-body p-4">
+                            <div class="bg-info bg-opacity-10 rounded-circle p-3 d-inline-flex mb-3">
+                                <i class="fas fa-chart-pie fa-2x text-info"></i>
+                            </div>
+                            <h6>3. Se resultat</h6>
+                            <p class="text-muted small">Få detaljerade insikter och interaktiva visualiseringar</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Demo Section -->
+            <div class="card border-0 shadow-lg">
+                <div class="card-header bg-gradient-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-play-circle me-2"></i>
+                        Demo: Analysera Svenska E-handelsrecensioner
+                    </h5>
+                </div>
+                <div class="card-body p-5">
+                    
+                    <!-- Sample Data Option -->
+                    <div class="mb-4">
+                        <h6 class="mb-3">Välj data att analysera:</h6>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <button class="btn btn-outline-primary w-100 h-100 p-3" onclick="loadSampleData()" id="sampleBtn">
+                                    <i class="fas fa-star fa-2x mb-2 d-block"></i>
+                                    <strong>Använd exempel-recensioner</strong>
+                                    <small class="d-block text-muted">10 svenska e-handelsrecensioner</small>
+                                </button>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="border-2 border-dashed rounded p-3 h-100 d-flex align-items-center justify-content-center" style="border-color: #dee2e6;">
+                                    <div class="text-center">
+                                        <i class="fas fa-upload fa-2x text-muted mb-2"></i>
+                                        <p class="mb-1"><strong>Ladda upp egen CSV</strong></p>
+                                        <input type="file" class="form-control" id="demoFileInput" accept=".csv" onchange="handleDemoUpload()" style="display: none;">
+                                        <button class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('demoFileInput').click()">
+                                            Välj fil
+                                        </button>
+                                        <small class="d-block text-muted mt-1">Upp till 50 recensioner</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Text Input Alternative -->
+                    <div class="mb-4" id="textInputSection" style="display: none;">
+                        <h6>Eller klistra in recensioner direkt:</h6>
+                        <textarea class="form-control" rows="6" id="demoTextInput" placeholder="Klistra in svenska recensioner här, en per rad..."></textarea>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input" type="checkbox" id="showTextInput" onchange="toggleTextInput()">
+                            <label class="form-check-label" for="showTextInput">
+                                Använd textinmatning istället
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Analyze Button -->
+                    <div class="text-center mb-4">
+                        <button class="btn btn-success btn-lg px-5" onclick="runDemoAnalysis()" id="analyzeBtn" disabled>
+                            <i class="fas fa-magic me-2"></i>
+                            Analysera med AI
+                        </button>
+                    </div>
+
+                    <!-- Loading State -->
+                    <div id="demoLoading" class="text-center py-5" style="display: none;">
+                        <div class="spinner-border text-primary mb-3" role="status"></div>
+                        <h6>AI analyserar dina recensioner...</h6>
+                        <p class="text-muted">Detta tar bara några sekunder</p>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar bg-gradient-primary progress-bar-striped progress-bar-animated" style="width: 0%" id="demoProgress"></div>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div id="demoResults" style="display: none;">
+                        <!-- Sentiment Overview -->
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-4">
+                                <div class="card border-0 bg-success bg-opacity-10">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-smile fa-2x text-success mb-2"></i>
+                                        <h4 class="text-success mb-1" id="positiveCount">-</h4>
+                                        <small class="text-muted">Positiva</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card border-0 bg-warning bg-opacity-10">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-meh fa-2x text-warning mb-2"></i>
+                                        <h4 class="text-warning mb-1" id="neutralCount">-</h4>
+                                        <small class="text-muted">Neutrala</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card border-0 bg-danger bg-opacity-10">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-frown fa-2x text-danger mb-2"></i>
+                                        <h4 class="text-danger mb-1" id="negativeCount">-</h4>
+                                        <small class="text-muted">Negativa</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Key Insights -->
+                        <div class="alert alert-info">
+                            <h6><i class="fas fa-lightbulb me-2"></i>AI-genererade insikter:</h6>
+                            <ul id="insightsList" class="mb-0">
+                                <!-- Insights will be populated by JavaScript -->
+                            </ul>
+                        </div>
+
+                        <!-- Top Keywords -->
+                        <div class="mb-4">
+                            <h6>Vanligaste nyckelord:</h6>
+                            <div id="keywordTags">
+                                <!-- Keywords will be populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <!-- Sample Reviews Table -->
+                        <div class="mb-4">
+                            <h6>Analyserade recensioner (urval):</h6>
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Recension</th>
+                                            <th>Sentiment</th>
+                                            <th>Säkerhet</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="reviewsTable">
+                                        <!-- Reviews will be populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Call to Action -->
+                        <div class="text-center p-4 bg-light rounded">
+                            <h5>Imponerad av resultaten?</h5>
+                            <p class="text-muted mb-3">Få tillgång till fullständiga rapporter, obegränsad analys och mycket mer</p>
+                            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                                <a href="{{ url_for('register') }}" class="btn btn-primary">
+                                    <i class="fas fa-user-plus me-2"></i>Skapa gratis konto
+                                </a>
+                                <a href="{{ url_for('pricing') }}" class="btn btn-outline-primary">
+                                    <i class="fas fa-tag me-2"></i>Se priser
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Benefits Section -->
+            <div class="row g-4 mt-5">
+                <div class="col-md-6">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-shield-alt fa-2x text-primary me-3"></i>
+                        </div>
+                        <div>
+                            <h6>100% säkert</h6>
+                            <p class="text-muted small">All bearbetning sker lokalt i Sverige. Inga data skickas till externa AI-tjänster.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-language fa-2x text-success me-3"></i>
+                        </div>
+                        <div>
+                            <h6>Svenska AI-modeller</h6>
+                            <p class="text-muted small">Specialutvecklade för svenska texter - bättre precision än globala verktyg.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+// Demo functionality
+let demoData = [];
+let analysisResults = null;
+
+// Sample data for demo
+const sampleReviews = [
+    {
+        review: "Fantastisk service och snabb leverans! Produkten kom inom 24 timmar och var exakt som beskrevet. Kommer definitivt att handla här igen.",
+        rating: 5,
+        källa: "Webbshop",
+        name: "Anna Lindberg",
+        date: "2024-09-10"
+    },
+    {
+        review: "Bra kvalitet på produkten men leveransen tog längre tid än väntat. Kundtjänsten var dock mycket hjälpsam när jag kontaktade dem.",
+        rating: 4,
+        källa: "E-post", 
+        name: "Erik Johansson",
+        date: "2024-09-09"
+    },
+    {
+        review: "Produkten var okej men inte riktigt vad jag förväntade mig baserat på beskrivningen. Prisvärd dock.",
+        rating: 3,
+        källa: "Google Reviews",
+        name: "Maria Svensson", 
+        date: "2024-09-08"
+    },
+    {
+        review: "Utmärkt kundservice! Jag hade problem med min beställning och de löste det direkt. Mycket professionellt bemötande.",
+        rating: 5,
+        källa: "Trustpilot",
+        name: "Lars Pettersson",
+        date: "2024-09-07"
+    },
+    {
+        review: "Snabb leverans och bra förpackning. Produkten höll hög kvalitet och fungerade perfekt direkt ur lådan.",
+        rating: 5,
+        källa: "Webbshop",
+        name: "Ingrid Andersson",
+        date: "2024-09-06"
+    },
+    {
+        review: "Lite besviken på produktkvaliteten. Höll inte vad jag förväntade mig för det priset. Returen gick dock smidigt.",
+        rating: 2,
+        källa: "E-post",
+        name: "Johan Berg",
+        date: "2024-09-05"
+    },
+    {
+        review: "Första intrycket var mycket bra. Enkel beställningsprocess och tydlig kommunikation genom hela köpet.",
+        rating: 4,
+        källa: "Formulär",
+        name: "Cecilia Nilsson",
+        date: "2024-09-04"
+    },
+    {
+        review: "Rekommenderar starkt! Allt fungerade smidigt från beställning till leverans. Produkten överträffade mina förväntningar.",
+        rating: 5,
+        källa: "Google Reviews",
+        name: "Thomas Karlsson",
+        date: "2024-09-03"
+    },
+    {
+        review: "Okej produkt men webbsidan kunde vara mer användarvänlig. Svårt att hitta information om leveranstider.",
+        rating: 3,
+        källa: "Webbshop",
+        name: "Helena Ström",
+        date: "2024-09-02"
+    },
+    {
+        review: "Mycket nöjd med både produkt och service. Snabb leverans och produkten fungerar precis som utlovat. Toppbetyg!",
+        rating: 5,
+        källa: "Trustpilot",
+        name: "Mikael Lundgren",
+        date: "2024-09-01"
+    }
+];
+
+function loadSampleData() {
+    // Fetch from API for consistency
+    fetch('/api/demo_data')
+        .then(response => response.json())
+        .then(data => {
+            demoData = data;
+            document.getElementById('sampleBtn').classList.add('btn-primary');
+            document.getElementById('sampleBtn').classList.remove('btn-outline-primary');
+            document.getElementById('analyzeBtn').disabled = false;
+            showDataPreview();
+        })
+        .catch(error => {
+            console.error('Error loading sample data:', error);
+            // Fallback to static data
+            demoData = [...sampleReviews];
+            document.getElementById('sampleBtn').classList.add('btn-primary');
+            document.getElementById('sampleBtn').classList.remove('btn-outline-primary');
+            document.getElementById('analyzeBtn').disabled = false;
+            showDataPreview();
+        });
+}
+
+function showDataPreview() {
+    // Could show a preview of the data that will be analyzed
+    console.log('Sample data loaded:', demoData.length, 'reviews');
+}
+
+function toggleTextInput() {
+    const checkbox = document.getElementById('showTextInput');
+    const textSection = document.getElementById('textInputSection');
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    
+    if (checkbox.checked) {
+        textSection.style.display = 'block';
+        analyzeBtn.disabled = false;
+    } else {
+        textSection.style.display = 'none';
+        if (demoData.length === 0) {
+            analyzeBtn.disabled = true;
+        }
+    }
+}
+
+function handleDemoUpload() {
+    const fileInput = document.getElementById('demoFileInput');
+    const file = fileInput.files[0];
+    
+    if (file && file.type === 'text/csv') {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const csv = e.target.result;
+            // Parse CSV and populate demoData
+            parseDemoCSV(csv);
+        };
+        reader.readAsText(file);
+    }
+}
+
+function parseDemoCSV(csv) {
+    // Simple CSV parser for demo
+    const lines = csv.split('\n');
+    const headers = lines[0].split(',');
+    demoData = [];
+    
+    for (let i = 1; i < Math.min(lines.length, 51); i++) { // Limit to 50 reviews for demo
+        if (lines[i].trim()) {
+            const values = lines[i].split(',');
+            if (values.length >= 5) {
+                demoData.push({
+                    review: values[0].replace(/"/g, ''),
+                    rating: parseInt(values[1]) || 3,
+                    källa: values[2].replace(/"/g, ''),
+                    name: values[3].replace(/"/g, ''),
+                    date: values[4].replace(/"/g, '')
+                });
+            }
+        }
+    }
+    
+    document.getElementById('analyzeBtn').disabled = false;
+    console.log('CSV data loaded:', demoData.length, 'reviews');
+}
+
+function runDemoAnalysis() {
+    // Check if we have text input instead
+    const textInput = document.getElementById('demoTextInput').value.trim();
+    if (document.getElementById('showTextInput').checked && textInput) {
+        // Convert text input to demo data
+        const textReviews = textInput.split('\n').filter(line => line.trim());
+        demoData = textReviews.map((review, index) => ({
+            review: review.trim(),
+            rating: 4, // Default rating
+            källa: "Text Input",
+            name: `Användare ${index + 1}`,
+            date: new Date().toISOString().split('T')[0]
+        }));
+    }
+    
+    if (demoData.length === 0) {
+        alert('Välj exempel-data eller ladda upp en CSV-fil först');
+        return;
+    }
+    
+    // Show loading state
+    document.getElementById('demoLoading').style.display = 'block';
+    document.getElementById('demoResults').style.display = 'none';
+    
+    // Simulate analysis progress
+    simulateAnalysisProgress();
+    
+    // Run actual analysis after delay
+    setTimeout(() => {
+        performDemoAnalysis();
+    }, 3000);
+}
+
+function simulateAnalysisProgress() {
+    const progressBar = document.getElementById('demoProgress');
+    let progress = 0;
+    
+    const interval = setInterval(() => {
+        progress += Math.random() * 20;
+        if (progress > 100) {
+            progress = 100;
+            clearInterval(interval);
+        }
+        progressBar.style.width = progress + '%';
+    }, 200);
+}
+
+function performDemoAnalysis() {
+    // Simulate AI analysis results
+    analysisResults = generateDemoResults(demoData);
+    
+    // Hide loading, show results
+    document.getElementById('demoLoading').style.display = 'none';
+    document.getElementById('demoResults').style.display = 'block';
+    
+    // Populate results
+    displayDemoResults(analysisResults);
+}
+
+function generateDemoResults(reviews) {
+    // Simple sentiment analysis simulation based on rating and keywords
+    const results = {
+        positive: 0,
+        neutral: 0,
+        negative: 0,
+        keywords: {},
+        insights: [],
+        analyzedReviews: []
+    };
+    
+    reviews.forEach(review => {
+        let sentiment = 'neutral';
+        let confidence = 0.75;
+        
+        // Simple sentiment based on rating
+        if (review.rating >= 4) {
+            sentiment = 'positive';
+            confidence = 0.85;
+            results.positive++;
+        } else if (review.rating <= 2) {
+            sentiment = 'negative'; 
+            confidence = 0.80;
+            results.negative++;
+        } else {
+            results.neutral++;
+        }
+        
+        // Extract simple keywords
+        const words = review.review.toLowerCase().split(' ');
+        words.forEach(word => {
+            if (word.length > 4) {
+                results.keywords[word] = (results.keywords[word] || 0) + 1;
+            }
+        });
+        
+        results.analyzedReviews.push({
+            ...review,
+            sentiment: sentiment,
+            confidence: confidence
+        });
+    });
+    
+    // Generate insights
+    const totalReviews = reviews.length;
+    const positivePercent = Math.round((results.positive / totalReviews) * 100);
+    
+    results.insights.push(`${positivePercent}% av recensionerna är positiva`);
+    results.insights.push(`Genomsnittligt betyg: ${(reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)}`);
+    
+    if (results.positive > results.negative) {
+        results.insights.push('Övervägande positiv kundupplevelse');
+    }
+    
+    return results;
+}
+
+function displayDemoResults(results) {
+    // Update counters
+    document.getElementById('positiveCount').textContent = results.positive;
+    document.getElementById('neutralCount').textContent = results.neutral; 
+    document.getElementById('negativeCount').textContent = results.negative;
+    
+    // Update insights
+    const insightsList = document.getElementById('insightsList');
+    insightsList.innerHTML = '';
+    results.insights.forEach(insight => {
+        const li = document.createElement('li');
+        li.textContent = insight;
+        insightsList.appendChild(li);
+    });
+    
+    // Update keywords
+    const keywordTags = document.getElementById('keywordTags');
+    keywordTags.innerHTML = '';
+    const topKeywords = Object.entries(results.keywords)
+        .sort(([,a], [,b]) => b - a)
+        .slice(0, 8);
+    
+    topKeywords.forEach(([word, count]) => {
+        const span = document.createElement('span');
+        span.className = 'badge bg-primary me-2 mb-2';
+        span.textContent = `${word} (${count})`;
+        keywordTags.appendChild(span);
+    });
+    
+    // Update reviews table
+    const reviewsTable = document.getElementById('reviewsTable');
+    reviewsTable.innerHTML = '';
+    results.analyzedReviews.slice(0, 5).forEach(review => {
+        const row = document.createElement('tr');
+        const sentimentBadge = review.sentiment === 'positive' ? 'success' : 
+                               review.sentiment === 'negative' ? 'danger' : 'warning';
+        const sentimentText = review.sentiment === 'positive' ? 'Positiv' : 
+                              review.sentiment === 'negative' ? 'Negativ' : 'Neutral';
+        
+        row.innerHTML = `
+            <td>${review.review.substring(0, 80)}${review.review.length > 80 ? '...' : ''}</td>
+            <td><span class="badge bg-${sentimentBadge}">${sentimentText}</span></td>
+            <td>${Math.round(review.confidence * 100)}%</td>
+        `;
+        reviewsTable.appendChild(row);
+    });
+}
+</script>
+
+{% endblock %}
